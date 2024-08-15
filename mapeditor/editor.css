@@ -1,0 +1,15 @@
+/* UI */
+td{vertical-align:top;font-family:arial;padding:0 20px 0 0}
+textarea{width:340px;height:220px;line-height:12px;font-size:14px;letter-spacing:3px}
+
+/* 3D scene */
+#viewport{width:700px;height:600px;overflow:hidden;border:1px solid;position:relative;perspective:500px}
+#viewport2{width:100px;height:100px;overflow:hidden;border:1px solid;position:relative;perspective:500px}
+#viewport *{transform-style:preserve-3d;box-sizing:border-box}
+#viewport2 *{transform-style:preserve-3d;box-sizing:border-box}
+#camera{width:0;height:0;position:absolute;top:50%;left:50%}
+#camera2{width:0;height:0;position:absolute;top:100%;left:50%}
+#scene{position:fixed;width:2020px;height:2020px;transform:translate3D(-50%,-50%,-2000px)rotateX(45deg)}
+#scene2{position:fixed;width:200px;height:200px;transform:translate3D(-50%,-50%,-2000px)rotateX(45deg)}
+#grid{position:fixed;width:2020px;height:2020px;background:linear-gradient(#777 20px,#0000 20px),linear-gradient(90deg,#777 20px,#0000 20px);background-size:200px 200px;font:200px arial;color:#aaa;transform:translateZ(1px)}
+#floor{position:fixed;width:2020px;height:2020px;background:#4B4}
