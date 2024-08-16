@@ -65,7 +65,7 @@ W = {
     // Compile the Vertex shader and attach it to the program
     W.gl.compileShader(t);
     W.gl.attachShader(W.program, t);
-    if(debug) console.log('vertex shader:', W.gl.getShaderInfoLog(t) || 'OK');
+    //if(debug) console.log('vertex shader:', W.gl.getShaderInfoLog(t) || 'OK');
     
     // Create a Fragment shader
     // (This GLSL program is called for every fragment (pixel) of the scene)
@@ -101,12 +101,12 @@ W = {
     // Compile the Fragment shader and attach it to the program
     W.gl.compileShader(t);
     W.gl.attachShader(W.program, t);
-    if(debug) console.log('fragment shader:', W.gl.getShaderInfoLog(t) || 'OK');
+    //if(debug) console.log('fragment shader:', W.gl.getShaderInfoLog(t) || 'OK');
     
     // Compile the program
     W.gl.linkProgram(W.program);
     W.gl.useProgram(W.program);
-    if(debug) console.log('program:', W.gl.getProgramInfoLog(W.program) || 'OK');
+    //if(debug) console.log('program:', W.gl.getProgramInfoLog(W.program) || 'OK');
     
     // Set the scene's background color (RGBA)
     W.gl.clearColor(1, 1, 1, 1);
@@ -151,11 +151,10 @@ W = {
     if(state.fov){
       W.projection =     
         new DOMMatrix([
-          (1 / Math.tan(state.fov * Math.PI / 180)) / (W.canvas.width / W.canvas.height), 0, 0, 0, 
-          0, (1 / Math.tan(state.fov * Math.PI / 180)), 0, 0, 
-          0, 0, -1001 / 999, -1,
-          0, 0, -2002 / 999, 0
+          (1 / Math.tan(state.fov * Math.PI / 180)) / (W.canvas.width / W.canvas.height), 0, 0, 0,  0, 1.8, 0, 0,  0, 0, -1.001, -1,  0, 0, -.2, 0
         ]);
+        
+        
     }
     
     // Save object's type,
@@ -653,7 +652,7 @@ W.add("pyramid", {
 //       =         =
 //          =   =
 
-((i, ai, j, aj, p1, p2, vertices = [], indices = [], uv = [], precision = 20) => {
+((i, ai, j, aj, p1, p2, vertices = [], indices = [], uv = [], precision = 5) => {
   for(j = 0; j <= precision; j++){
     aj = j * Math.PI / precision;
     for(i = 0; i <= precision; i++){
