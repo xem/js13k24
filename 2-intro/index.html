@@ -1,0 +1,41 @@
+﻿<style>
+body{background:#000;overflow:hidden}
+@font-face {font-family:m;src:url(m.woff2)}
+.r{color:#f23}
+.g{color:#2E2}
+.b{color:#57D}
+.y{color:#ff3}
+span{font-family:m,arial;letter-spacing:-3;text-stroke:.5px #732;-webkit-text-stroke:.5px #732;text-shadow:0 1px #952,0 2px #842,0 3px #731,0 4px #621,0 5px #510}
+sup{-webkit-text-stroke:.5px #cc0;}
+h1{transform:scale(.001);transition:all .2s;margin:35vh auto;}
+div div{transform:scale(1.7,1.8);margin:10px 0 0;}
+</style>
+<center><h1 id=h><span class=r>S<span class=b>T<span class=y>R<span class=b>I<span class=g>K<span class=y>A</span> <sup class=r>65/5</sup><div class=b>N<span class=g>I<span class=r>N<span class=y>T<span class=b>E<span class=r>N<span class=g>D<span class=b>E<span class=y>K<span class=r>A<div><span class=y>P<span class=b>H<span class=g>O<span class=r>B<span class=y>I<span class=b>A</h1>
+<script>
+
+onclick = () => {
+  // Sound
+  f = function(i){
+    var n=1.6e4;
+    var c=n/7;
+    if (i > n) return null;
+    var q=Math.pow(t(i,n),2.1);
+    return (i<c ? ((i+Math.sin(-i/900)*10)&16) : i&13) ?q:-q;
+  }
+
+  // Sound player
+  t=(i,n)=>(n-i)/n;
+  A=new AudioContext()
+  m=A.createBuffer(1,96e3,48e3)
+  b=m.getChannelData(0)
+  for(i=96e3;i--;)b[i]=f(i)
+  s=A.createBufferSource()
+  s.buffer=m
+  s.connect(A.destination)
+  s.start()
+  
+  h.style.transform = "scale(2.1)";
+  setTimeout(()=>h.style.transform = "scale(1.9)",200);
+  setTimeout(()=>h.style.transform = "scale(2)",400);
+}
+</script>

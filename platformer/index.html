@@ -1,8 +1,33 @@
+ï»¿<style>@font-face { font-family: emoji; src: url(//xem.github.io/unicode13/Twemoji.ttf) svg { font-family: emoji }</style>
+
 <script src="w.js"></script>
-<script src="treetexture.js"></script>
-<script src="bricktexture.js"></script>
 <canvas id=c width=800 height=600></canvas>
+<br>
+
+<canvas id=px hidden></canvas>
+<br>
+<img id=grass>
+<img id=sand>
+<img id=brick>
+<img id=roof>
+<img id=water>
+<br>
+<img id=tree src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz4mI3gxZjMzMzs8L3RleHQ+PC9zdmc+'>
+<br><img id=princess src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz4mI3gxZjQ3ODs8L3RleHQ+PC9zdmc+'>
+<img id=flag src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz4mI3gxZjZhOTs8L3RleHQ+PC9zdmc+'>
+<img id=door src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz7wn5qqPC90ZXh0Pjwvc3ZnPg=='>
+<img id=door2 src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0iLTEwMCIgeT0iODAiIGZvbnQtc2l6ZT0iOTVweCIgdHJhbnNmb3JtPSJzY2FsZSgtMSwxKSI+8J+aqjwvdGV4dD48L3N2Zz4='>
+<img id=window src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nMzAnIHk9JzMwJyBmb250LXNpemU9JzU1cHgnIHRyYW5zZm9ybT0ncm90YXRlKDQ1KSc+8J+rkzwvdGV4dD48L3N2Zz4='>
+<svg width='99' height='99' xmlns='http://www.w3.org/2000/svg'><text x='20' y='20' font-size='55px' transform='scale(1,1.2)rotate(45)'>ðŸ«“</text></svg>
 <script>
+
+pxtex=(c,H,S,L,v=10,w=10,h=10,x=c.getContext`2d`,i,j,m=Math.random)=>{for(c.width=w,c.height=h,i=w;i--;)for(j=h;j--;)x.fillStyle=`hsl(${H+(m()-.5)*v},${S+(m()-.5)*v}%,${L+(m()-.5)*v}%)`,x.fillRect(i,j,1,1);return c.toDataURL()}
+
+grass.src = pxtex(px,105,65,50,10,20,20);
+sand.src = pxtex(px,45,85,75,10,20,20);
+brick.src = pxtex(px,75,0,90,10,20,20);
+roof.src = pxtex(px,10,85,55,10,20,20);
+water.src = pxtex(px,195,40,50,3,20,20);
 
 // +X = right, +Z = near, +Y = up
 // -X = left, -Z = far, -Y = down
@@ -11,13 +36,17 @@
 // Coordinates of an object are at its center, ex: mario will be standing on the origin at [0, 0.5, 0]
 
 // Keyboard inputs
-onkeydown=onkeyup=e=>keys['s****lurd************************l**r************l*d***u**u'[e.which-32]]=+!!e.type[5]
+onkeydown=onkeyup=e=>{
+  keys['s****lurd************************l**r************l*d***u**u'[e.which-32]]=+!!e.type[5];
+  if(e.type == "keyup" && 's****lurd************************l**r************l*d***u**u'[e.which-32] == "s"){ jumpdone = 0 }
+}
 
+jumpdone = 0;
 
 // Hero
 hero = {
   x: 3,
-  y: 3,
+  y: 4,
   z: 3,
   
   ry: 0,
@@ -36,7 +65,7 @@ hero = {
   grounded: 1
 };
 
-G = 0.05;
+G = 0.09;
 
 // The world map as a list of 10x10 grids.
 map = {
@@ -52,7 +81,7 @@ map = {
   '    $'+
   '    $'+
   '    $'+
-  '    \'\'\'\'\'\''+
+  '    $$$$$$'+
   '          '+
   '          '+
   '          ',
@@ -62,7 +91,7 @@ map = {
   '#########'+
   '##########'+
   '#(########'+
-  '###(######'+
+  '#(########'+
   '#(########'+
   '##########'+
   '#:########'+
@@ -75,8 +104,8 @@ map = {
   '##########'+
   '##########'+
   '#(########'+
-  '##########'+
   '#(########'+
+  '##########'+
   '##########'+
   '##########'+
   '##########'+
@@ -109,7 +138,8 @@ collision = (x, y, z, log, block, fine) => {
   z1 = Math.floor(z);
   block = bigmap[y1]?.[z1 * map.w + x1];
   if(y < 0) return 0;
-  if(!block)return y;
+  if(!block)return null;
+  //console.log(x1,y1,z1,block)
   if(block.type == "cube") return y1+1;
   else if(block.type == "water") return y1+1;
   else if(block.type == "slope"){
@@ -132,7 +162,7 @@ collision = (x, y, z, log, block, fine) => {
     }
   }
   //if(log) console.log(x, y, z, x1, y1, z1, block);
-  return 0;
+  return null;
 },
 
 
@@ -146,7 +176,7 @@ onload = () => {
   // Create scene
   W.reset(c);
   W.ambient(0.7);
-  W.light({x:.5,y:-.3,z:-.5});
+  W.light({x:.5,y:-.3,z:.2});
   for(y=map.layers.length;y--;){
     bigmap[y] = [];
     for(x=map.w;x--;){
@@ -171,7 +201,7 @@ onload = () => {
           if(code == 35) continue; // air
           
           if(code == 1){ // water
-            W.cube({size:1,x:x+.5,y:y+.5,z:z+.5,b:"55F"});
+            W.cube({w:1,h:.85,d:1,x:x+.5,y:y+.5,z:z+.5,t:water});
             bigmap[y][z*map.w+x] = {type:"water"};
           }
           
@@ -183,10 +213,10 @@ onload = () => {
           // Chars 32-127: 0b0xxxyyzz
           //
           // - zz (bits 0-1): rotation
-          //     0°
-          //     90°
-          //     180°
-          //     270°
+          //     0Â°
+          //     90Â°
+          //     180Â°
+          //     270Â°
           //
           //  - yy (bits 2-3): texture (pick 4)
           //     sand
@@ -201,7 +231,7 @@ onload = () => {
           //     000-001 reserved (chars 0-31)
           //     010 cube
           //     011 slope
-          //     100 45° wall
+          //     100 45Â° wall
           //     101 slope corner flat
           //     110 slope corner angled
           //     111 pyramid
@@ -210,7 +240,7 @@ onload = () => {
             zz = code & 0b11;
             yy = (code >> 2) & 0b11;
             xxx = (code >> 4) & 0b111;
-            W[["","","cube", "slope","cube"][xxx]]({size:1,x:x+.5,y:y+.5,z:z+.5,b:["5B5","DD3","aaa","ddf"][yy],ry:zz*-90});
+            W[["","","cube", "slope","cube"][xxx]]({w:1,h:[1.2,1,1][yy],d:1,x:x+.5,y:y+.5,z:z+.5,ry:zz*-90,t:[grass,sand,brick][yy]});
             bigmap[y][z*map.w+x] = {type:["","","cube", "slope"][xxx], angle: zz};
           }
         }
@@ -225,10 +255,10 @@ onload = () => {
     W.group({n:"R",g:"H",size:1});
     
       // M: hero 3D model 
-      W.cube({n:"M",g:"H",w:.2,h:.5,d:.2,y:.25, b:"FFO8"});
+      W.cube({n:"M",g:"H",w:.2,h:.5,d:.2,y:.25, b:"aa5"});
   
     // Camera
-    W.camera({g:"H",z:3,y:1.3,rx:-5});
+    W.camera({g:"H",z:3,y:1.8,rx:-15});
   
   W.clearColor("8Af");
   
@@ -237,12 +267,12 @@ onload = () => {
   for(i = 10; i--;){
     for(j = 10; j--;){
       //W.sphere({x:i,z:j,y:0,size:.05,b:"000"});
-      W.sphere({x:i,z:j,y:1,size:.05,b:"000"});
+      //W.sphere({x:i,z:j,y:1,size:.05,b:"000"});
       //W.sphere({x:i,z:j,y:2,size:.05,b:"000"});
     }
   }
   
-  W.sphere({n:"h1",x:hero.x-.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
+  /*W.sphere({n:"h1",x:hero.x-.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
   W.sphere({n:"h2",x:hero.x-.2,z:hero.z+.2,y:hero.y,size:.05,b:"F00"});
   W.sphere({n:"h3",x:hero.x+.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
   W.sphere({n:"h4",x:hero.x+.2,z:hero.z+.2,y:hero.y,size:.05,b:"F00"});
@@ -253,7 +283,7 @@ onload = () => {
   W.sphere({n:"h5",x:hero.x-.2,z:hero.z-.2,y:hero.y+.5,size:.05,b:"F00"});
   W.sphere({n:"h6",x:hero.x-.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});
   W.sphere({n:"h7",x:hero.x+.2,z:hero.z-.2,y:hero.y+.5,size:.05,b:"F00"});
-  W.sphere({n:"h8",x:hero.x+.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});
+  W.sphere({n:"h8",x:hero.x+.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});*/
   
   
   // Game loop
@@ -264,7 +294,7 @@ onload = () => {
     
     // Rotate  left / right
     if(keys.r || keys.l){
-      hero.rcamera += (-keys.l + keys.r) * 5;
+      hero.rcamera += (-keys.l + keys.r) * 3;
     }
     
     // Move hero's group
@@ -273,12 +303,12 @@ onload = () => {
     
     //console.log(hero.rcamera, hero.x, hero.z);
     
-    
+
     // Debug
     //console.log(hero, collision(hero.x-.1, hero.y, hero.z-.1));
     
     // red bottom
-    W.move({n:"h1",x:hero.x-.1,z:hero.z-.1,y:hero.y});
+    /*W.move({n:"h1",x:hero.x-.1,z:hero.z-.1,y:hero.y});
     W.move({n:"h2",x:hero.x-.1,z:hero.z+.1,y:hero.y});
     W.move({n:"h3",x:hero.x+.1,z:hero.z-.1,y:hero.y});
     W.move({n:"h4",x:hero.x+.1,z:hero.z+.1,y:hero.y});
@@ -293,9 +323,8 @@ onload = () => {
     W.move({n:"h5",x:hero.x-.1,z:hero.z-.1,y:hero.y+.5});
     W.move({n:"h6",x:hero.x-.1,z:hero.z+.1,y:hero.y+.5});
     W.move({n:"h7",x:hero.x+.1,z:hero.z-.1,y:hero.y+.5});
-    W.move({n:"h8",x:hero.x+.1,z:hero.z+.1,y:hero.y+.5});
-    
-    // bottom tests
+    W.move({n:"h8",x:hero.x+.1,z:hero.z+.1,y:hero.y+.5});*/
+
     nw = (collision(hero.x-.15, hero.y, hero.z-.15)||hero.y)+.01;
     ne = (collision(hero.x+.15, hero.y, hero.z-.15)||hero.y)+.01;
     sw = (collision(hero.x-.15, hero.y, hero.z+.15)||hero.y)+.01;
@@ -304,63 +333,81 @@ onload = () => {
     // Grounded
     hero.grounded = 0;
     if(nw || ne || sw || se) {
-      //console.log(nw, ne, sw, se);
-      if(Math.max(nw, ne, sw, se) < hero.y + 0.1){
+      //if(Math.max(nw, ne, sw, se) < hero.y + 0.1){
         hero.y = Math.max(nw, ne, sw, se);
-      }
+      //}
+    }
+
+    nw = (collision(hero.x-.15, hero.y-.2, hero.z-.15));
+    ne = (collision(hero.x+.15, hero.y-.2, hero.z-.15));
+    sw = (collision(hero.x-.15, hero.y-.2, hero.z+.15));
+    se = (collision(hero.x+.15, hero.y-.2, hero.z+.15));
+    
+    if(nw > hero.y - .2 || ne > hero.y - .2 || sw > hero.y - .2 || se > hero.y - .2){
       hero.grounded = 1;
+    }
+
+    // jump
+    if(hero.grounded && keys.s && !jumpdone){
+      hero.vy += .7;
+      jumpdone = 1;
     }
     
     // Fall
+    
     hero.vy -= G;
-    if(hero.vy <= -G) hero.vy = -G;
-    //console.log("fall");
+    
+    
+    if(hero.vy < -G) hero.vy = -G; 
+    console.log(hero.vy);
+
     hero.y += hero.vy;
     if(hero.y < 1) hero.y = 1;
     
     lastx = hero.x;
     lastz = hero.z;
     
-    
     // Go front / back
     if(keys.u || keys.d){
       dz = (-keys.u + keys.d) * Math.cos(-hero.rcamera*Math.PI/180) / 20;
-    
-      // Front collision
-      if(dz < 0 && (nw > hero.y + .2 || ne > hero.y + .2)){
-          console.log("f");
-          //hero.z += .01;
-      }
-      
-      // Back collision
-      else if(dz > 0 && (sw > hero.y + .2 || se > hero.y + .2)){
-          console.log("b");
-          //hero.z -= .01;
-      }
-      else {
-        hero.z += dz;
-      }
-      
       dx = (-keys.u + keys.d) * Math.sin(-hero.rcamera*Math.PI/180) / 20;
     
-      // Left collision
-      if(dx < 0 && (nw > hero.y + .2 || sw > hero.y + .2)){
-          console.log("l");
-          //hero.x -= .01;
-      }
       
-      // Right collision
-      else if(dx > 0 && (ne > hero.y + .2 || se > hero.y + .2)){
-          console.log("r");
-          //hero.x += .01;
-      }
-      else {
-        hero.x += dx;
-      }
-    }
+      hero.x += dx;
+      nw = (collision(hero.x-.15, hero.y, hero.z-.15));
+      ne = (collision(hero.x+.15, hero.y, hero.z-.15));
+      sw = (collision(hero.x-.15, hero.y, hero.z+.15));
+      se = (collision(hero.x+.15, hero.y, hero.z+.15));
+      nw2 = (collision(hero.x-.15, hero.y+.5, hero.z-.15));
+      ne2 = (collision(hero.x+.15, hero.y+.5, hero.z-.15));
+      sw2 = (collision(hero.x-.15, hero.y+.5, hero.z+.15));
+      se2 = (collision(hero.x+.15, hero.y+.5, hero.z+.15));
+      
+      if(
+        nw > hero.y + .2 || ne > hero.y + .2 || sw > hero.y + .2 || se > hero.y + .2
+        || nw2 > hero.y + .5 || ne2 > hero.y + .5 || sw2 > hero.y + .5 || se2 > hero.y + .5
+      ){
+        hero.x = lastx;
+      }   
 
-    
-    //console.log(hero.y);
+      
+      hero.z += dz;
+      nw = (collision(hero.x-.15, hero.y, hero.z-.15));
+      ne = (collision(hero.x+.15, hero.y, hero.z-.15));
+      sw = (collision(hero.x-.15, hero.y, hero.z+.15));
+      se = (collision(hero.x+.15, hero.y, hero.z+.15));
+      nw2 = (collision(hero.x-.15, hero.y+.5, hero.z-.15));
+      ne2 = (collision(hero.x+.15, hero.y+.5, hero.z-.15));
+      sw2 = (collision(hero.x-.15, hero.y+.5, hero.z+.15));
+      se2 = (collision(hero.x+.15, hero.y+.5, hero.z+.15));
+      //console.log("lr", lastz, hero.y, nw, hero.z);
+      if(
+        nw > hero.y + .2 || ne > hero.y + .2 || sw > hero.y + .2 || se > hero.y + .2
+        || nw2 > hero.y + .5 || ne2 > hero.y + .5 || sw2 > hero.y + .5 || se2 > hero.y + .5
+      ){
+        hero.z = lastz;
+      } 
+    }
     
   },16);
 }
