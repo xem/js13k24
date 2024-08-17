@@ -1,1 +1,3 @@
-﻿<svg width='99' height='99' xmlns='http://www.w3.org/2000/svg'><text x='-15' y='80' font-size='95px'>&#x1f333;</text></svg>
+﻿<svg width='99' height='99' xmlns='http://www.w3.org/2000/svg'>
+<defs><style>@font-face{font-family:emoji;src:url(Twemoji.ttf)}</style></defs>
+<text x='0' y='90' font-size='95px' font-family='emoji'>🌳</text></svg>
