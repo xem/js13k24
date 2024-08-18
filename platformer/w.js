@@ -658,7 +658,7 @@ W.add("pyramid", {
 //       =         =
 //          =   =
 
-((i, ai, j, aj, p1, p2, vertices = [], indices = [], uv = [], precision = 100) => {
+((i, ai, j, aj, p1, p2, vertices = [], indices = [], uv = [], precision = 10) => {
   for(j = 0; j <= precision; j++){
     aj = j * Math.PI / precision;
     for(i = 0; i <= precision; i++){
