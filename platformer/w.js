@@ -84,7 +84,7 @@ W = {
       // The code below displays colored / textured / shaded fragments
       void main() {
         c = mix(texture(sampler, v_uv.xy), v_col, o[3]);  // base color (mix of texture and rgba)
-        if(o[1] == 0. || (bb.z == 0.)){                   // if lighting/shading is enabled:
+        if(o[1] == 1.){                   // if lighting/shading is enabled:
           c = vec4(                                       // output = vec4(base color RGB * (directional shading + ambient light)), base color Alpha
             c.rgb * (max(0., dot(light, -normalize(       // Directional shading: compute dot product of light direction and normal (0 if negative)
               o[0] > 0.                                   // if smooth shading is enabled:
@@ -96,7 +96,7 @@ W = {
           );
         }
         //else {
-        //  c = c * vec4(1.2, 1.2, 1.2, 1);
+          c = c * vec4(1.1, 1.1, 1.1, 1);
         //}
       }`
     );
@@ -154,7 +154,10 @@ W = {
     if(state.fov){
       W.projection =     
         new DOMMatrix([
-          (1 / Math.tan(state.fov * Math.PI / 180)) / (W.canvas.width / W.canvas.height), 0, 0, 0,  0, 1.8, 0, 0,  0, 0, -1.001, -1,  0, 0, -.2, 0
+          (1 / Math.tan(state.fov * Math.PI / 180)) / (W.canvas.width / W.canvas.height), 0, 0, 0, 
+          0, (1 / Math.tan(state.fov * Math.PI / 180)), 0, 0, 
+          0, 0, -1.001, -1,
+          0, 0, -.2, 0
         ]);
         
         
@@ -580,88 +583,6 @@ W.add("cube", {
   ]
 });
 
-// Cube
-//
-//    v6----- v5
-//   /|      /|
-//  v1------v0|
-//  | |  x  | |
-//  | |v7---|-|v4
-//  |/      |/
-//  v2------v3
-
-W.add("cube2", {
-  vertices: [
-    .5, .5, .5,  -.5, .5, .5,  -.5,-.5, .5, // front
-    .5, .5, .5,  -.5,-.5, .5,   .5,-.5, .5,
-    .5, .5,-.5,   .5, .5, .5,   .5,-.5, .5, // right
-    .5, .5,-.5,   .5,-.5, .5,   .5,-.5,-.5,
-    .5, .5,-.5,  -.5, .5,-.5,  -.5, .5, .5, // up
-    .5, .5,-.5,  -.5, .5, .5,   .5, .5, .5,
-   -.5, .5, .5,  -.5, .5,-.5,  -.5,-.5,-.5, // left
-   -.5, .5, .5,  -.5,-.5,-.5,  -.5,-.5, .5,
-   -.5, .5,-.5,   .5, .5,-.5,   .5,-.5,-.5, // back
-   -.5, .5,-.5,   .5,-.5,-.5,  -.5,-.5,-.5,
-    .5,-.5, .5,  -.5,-.5, .5,  -.5,-.5,-.5, // down
-    .5,-.5, .5,  -.5,-.5,-.5,   .5,-.5,-.5
-  ],
-  uv: [
-    1, 1,   0, 1,   0, 0, // front
-    1, 1,   0, 0,   1, 0,            
-    1, 1,   0, 1,   0, 0, // right
-    1, 1,   0, 0,   1, 0, 
-    1, 1,   0, 1,   0, 0, // up
-    1, 1,   0, 0,   1, 0,
-    1, 1,   0, 1,   0, 0, // left
-    1, 1,   0, 0,   1, 0,
-    1, 1,   0, 1,   0, 0, // back
-    1, 1,   0, 0,   1, 0,
-    1, 1,   0, 1,   0, 0, // down
-    1, 1,   0, 0,   1, 0
-  ]
-});
-
-
-// Cube
-//
-//    v6----- v5
-//   /|      /|
-//  v1------v0|
-//  | |  x  | |
-//  | |v7---|-|v4
-//  |/      |/
-//  v2------v3
-
-W.add("cube3", {
-  vertices: [
-    .5, .8, .5,  -.5, .5, .5,  -.5,-.5, .5, // front
-    .5, .8, .5,  -.5,-.5, .5,   .5,-.5, .5,
-    .5, .5,-.5,   .5, .8, .5,   .5,-.5, .5, // right
-    .5, .5,-.5,   .5,-.8, .5,   .5,-.5,-.5,
-    .5, .5,-.5,  -.5, .5,-.5,  -.5, .5, .5, // up
-    .5, .5,-.5,  -.5, .5, .5,   .5, .8, .5,
-   -.5, .5, .5,  -.5, .5,-.5,  -.5,-.5,-.5, // left
-   -.5, .5, .5,  -.5,-.5,-.5,  -.5,-.5, .5,
-   -.5, .5,-.5,   .5, .5,-.5,   .5,-.5,-.5, // back
-   -.5, .5,-.5,   .5,-.5,-.5,  -.5,-.5,-.5,
-    .5,-.5, .5,  -.5,-.5, .5,  -.5,-.5,-.5, // down
-    .5,-.5, .5,  -.5,-.5,-.5,   .5,-.5,-.5
-  ],
-  uv: [
-    1, 1,   0, 1,   0, 0, // front
-    1, 1,   0, 0,   1, 0,            
-    1, 1,   0, 1,   0, 0, // right
-    1, 1,   0, 0,   1, 0, 
-    1, 1,   0, 1,   0, 0, // up
-    1, 1,   0, 0,   1, 0,
-    1, 1,   0, 1,   0, 0, // left
-    1, 1,   0, 0,   1, 0,
-    1, 1,   0, 1,   0, 0, // back
-    1, 1,   0, 0,   1, 0,
-    1, 1,   0, 1,   0, 0, // down
-    1, 1,   0, 0,   1, 0
-  ]
-});
 
 // SLOPE
 //
@@ -737,7 +658,7 @@ W.add("pyramid", {
 //       =         =
 //          =   =
 
-((i, ai, j, aj, p1, p2, vertices = [], indices = [], uv = [], precision = 5) => {
+((i, ai, j, aj, p1, p2, vertices = [], indices = [], uv = [], precision = 100) => {
   for(j = 0; j <= precision; j++){
     aj = j * Math.PI / precision;
     for(i = 0; i <= precision; i++){
@@ -745,7 +666,7 @@ W.add("pyramid", {
       vertices.push(+(Math.sin(ai) * Math.sin(aj)/2).toFixed(6), +(Math.cos(aj)/2).toFixed(6), +(Math.cos(ai) * Math.sin(aj)/2).toFixed(6));
       uv.push((Math.sin((i/precision))) * 3.5, -Math.sin(j/precision))
       if(i < precision && j < precision){
-        indices.push(p1 = j * (precision + 1) + i, p2 = p1 + (precision + 1), (p1 + 1), (p1 + 1), p2, (p2 + 1));
+        indices.push(p1 = j * (precision + 1) + i, (p1 + 1), p2 = p1 + (precision + 1), (p1 + 1), (p2 + 1), p2);
       }
     }
   }

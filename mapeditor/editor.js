@@ -148,6 +148,7 @@ preview = (t) => {
     rotation = 0;
     texture = 0;
     extrapiece = token.codePointAt();
+    console.log(extrapiece);
   }
   else {
     console.log((rotation + (texture << 2) + (piece << 4)).toString(2));
@@ -181,11 +182,29 @@ drawpiece = (x, y, z, cursor) => {
       else if(extrapiece == "3"){
         html += `<div>🚧`;
       }
+      else if(extrapiece == "4"){
+        html += `<div>👸`;
+      }
+      else if(extrapiece == "5"){
+        html += `<div>🚩`;
+      }
+      else if(extrapiece == "6"){
+        html += `<div>🚪`;
+      }
+      else if(extrapiece == "7"){
+        html += `<div>🚪`;
+      }
+      else if(extrapiece == "8"){
+        html += `<div>🪟`;
+      }
     }
     return html;
   }
   return "";
 }
+
+//   '#####	##'+
+
 
 // Make all sprites face the camera
 updateSprites = () => {

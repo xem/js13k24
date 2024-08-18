@@ -5,6 +5,7 @@
 <script src="w.js"></script>
 <canvas id=c width=800 height=600></canvas>
 <br>
+<p hidden>
 <canvas id=px style='border:1px solid'></canvas>
 <img id=grass>
 <img id=sand>
@@ -17,6 +18,9 @@
 <img id=flag>
 <img id=princess>
 <img id=pie>
+<img id=fenc>
+<img id=sky>
+</p>
 <script>
 
 pxtex=(c,H,S,L,v=10,w=10,h=10,x=c.getContext`2d`,i,j,m=Math.random)=>{for(c.width=w,c.height=h,i=w;i--;)for(j=h;j--;)x.fillStyle=`hsl(${H+(m()-.5)*v},${S+(m()-.5)*v}%,${L+(m()-.5)*v}%)`,x.fillRect(i,j,1,1);return c.toDataURL()}
@@ -25,7 +29,7 @@ grass.src = pxtex(px,105,65,50,10,20,20);
 sand.src = pxtex(px,45,85,75,10,20,20);
 brick.src = pxtex(px,75,0,90,10,20,20);
 roof.src = pxtex(px,10,85,55,10,20,20);
-water.src = pxtex(px,195,40,50,3,20,20);
+water.src = pxtex(px,200,90,50,3,20,20);
 
 // +X = right, +Z = near, +Y = up
 // -X = left, -Z = far, -Y = down
@@ -44,9 +48,9 @@ jumpdone = 0;
 
 // Hero
 hero = {
-  x: 3,
+  x: 6,
   y: 4,
-  z: 3,
+  z: 6,
   
   ry: 0,
   rmodel: 0,
@@ -74,77 +78,51 @@ map = {
 
   // Layer 0:
 
-  '          '+
-  '  $$$$$$  '+
-  ' $$$$ '+
-  ' $$$$ '+
-  ' $$$$ '+
-  ' $$$$ '+
-  ' $$ '+
-  ' $$$$ '+
-  '  $$$$$$  '+
-  '          ',
+  '        '+
+  '        '+
+  '        '+
+  '        '+
+  '        '+
+  '       '+
+  '      '+
+  '       '+
+  '        '+
+  '        ',
 
   // Layer 1:
 
-  '(;#####9('+
-  '8########8'+
+  '(((((((((('+
+  '(((((((((('+
+  '########'+
+  '########'+
+  '#########'+
   '##########'+
   '##########'+
-  '####((#+;#'+
-  '####((####'+
   '##########'+
-  '##########'+
-  ':########:'+
-  '(;######9(',
+  '#########'+
+  '##########',
 
   // Layer 2:
 
-  '~########|'+
+  '(((((((((('+
+  '(((((((((('+
   '##########'+
   '##########'+
   '##########'+
-  '####((+;##'+
-  '####((####'+
   '##########'+
   '##########'+
   '##########'+
-  '|########|',
+  '##########'+
+  '##########',
 
   // Layer 3:
 
+  '|#########'+
+  '###'+
   '##########'+
   '##########'+
   '##########'+
   '##########'+
-  '####((;###'+
-  '####((####'+
-  '##########'+
-  '##########'+
-  '##########'+
-  '##########',
-
-  // Layer 4:
-
-  '##########'+
-  '##########'+
-  '##########'+
-  '##########'+
-  '####((####'+
-  '####((####'+
-  '##########'+
-  '##########'+
-  '##########'+
-  '##########',
-
-  // Layer 7:
-
-  '##########'+
-  '##########'+
-  '##########'+
-  '##########'+
-  '####||####'+
-  '####||####'+
   '##########'+
   '##########'+
   '##########'+
@@ -152,7 +130,6 @@ map = {
 
   ]
 }
-
 bigmap = [];
 
 collision = (x, y, z, log, block, fine) => {
@@ -162,10 +139,17 @@ collision = (x, y, z, log, block, fine) => {
   z1 = Math.floor(z);
   block = bigmap[y1]?.[z1 * map.w + x1];
   if(y < 0) return 0;
+  if(!block){
+    y1 = Math.floor(y),
+    x1 = Math.floor(x),
+    z1 = Math.floor(z);
+    block = bigmap[y1]?.[z1 * map.w + x1];
+  }
   if(!block)return null;
   //console.log(x1,y1,z1,block)
   if(block.type == "cube") return y1+1;
-  else if(block.type == "water") return y1+0.6;
+  if(block.type == "fence") return y1+1;
+  else if(block.type == "water") return y1+0.7;
   else if(block.type == "slope"){
     if(block.angle == 0){ // 1 towards -z, 0 towards +z
       fine = z - z1;
@@ -202,13 +186,13 @@ onload = () => {
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
   ctx.scale(-1,1);
-  ctx.font='180px emoji';
+  ctx.font='176px emoji';
   ctx.fillText("🚪",-235,180);
   door1.src=px.toDataURL()
   
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
-  ctx.font='180px emoji';
+  ctx.font='176px emoji';
   ctx.fillText("🚪",-35,180);
   door2.src=px.toDataURL()
   
@@ -223,18 +207,49 @@ onload = () => {
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
   ctx.font='180px emoji';
-  ctx.fillText("🚩",-35,180);
+  ctx.fillText("🚩",33,180);
   flag.src=px.toDataURL()
   
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
   ctx.font='180px emoji';
-  ctx.fillText("👸",5,170);
+  ctx.fillText("👸",7,170);
   princess.src=px.toDataURL()
+  
+  // Fence
+  px.width=200;px.height=200;
+  ctx=px.getContext("2d");
+  ctx.fillStyle="#FB5";
+  ctx.fillRect(0,50,199,20);
+  ctx.fillRect(0,130,199,20);
+  ctx.fillRect(25,20,50,179);
+  ctx.fillRect(125,20,50,179);
+  fenc.src=px.toDataURL()
+  
+  // Sky
+  px.width=512;px.height=512;
+  pxtex(px,200,90,40,5,512,512);
+  var gradient = ctx.createLinearGradient(0,150,0,260);
+  gradient.addColorStop(0,"#08D");
+  gradient.addColorStop(1,"#6CF");
+  ctx.fillStyle=gradient;
+  ctx.fillRect(0,0,512,250);
+  ctx.font="25px emoji";
+  ctx.fillText("☁️",20*2-20,180+30);
+  ctx.fillText("☁️",80*2-20,210+10);
+  ctx.fillText("☁️",140*2-20,170+30);
+  ctx.fillText("☁️",200*2-20,190+30);
+  ctx.fillText("☁️",240*2-20,200+30);
+  sky.src=px.toDataURL()
+  
+  lastjump=99;
+  nthjump=0;
   
   setTimeout(()=> {
   
-    var code,xxx,yy,zz;
+    
+  
+    var code,xxx,yy,zz, swim;
     
     // Reset keys
     keys = {u:0, l:0, r:0, d:0, s:0};
@@ -242,7 +257,7 @@ onload = () => {
     // Create scene
     W.reset(c);
     W.ambient(0.7);
-    W.light({x:.25,y:-.3,z:.2});
+    W.light({x:-.2,y:-.15,z:.1});
     for(y=map.layers.length;y--;){
       bigmap[y] = [];
       for(x=map.w;x--;){
@@ -272,8 +287,38 @@ onload = () => {
             }
             
             else if(code == 2){ // tree
-              W.billboard({size:2,x:x+.5,y:y+.8,z:z+.5,t:treec});
+              W.billboard({size:4,x:x+.4,y:y+1.5,z:z+.5,t:treec,ns:1});
               bigmap[y][z*map.w+x] = {type:"tree"};
+            }
+            
+            else if(code == 3){ // fence
+              W.plane({w:1,h:1,x:x+.5,y:y+.5,z:z+1,t:fenc});
+              bigmap[y][z*map.w+x] = {type:"fence"};
+            }
+            
+            else if(code == 4){ // princess
+              W.plane({w:2,h:2,x:x+.5,y:y+.5,z:z+.1,t:princess});
+              bigmap[y][z*map.w+x] = {type:"princess"};
+            }
+            
+            else if(code == 5){ // flag
+              W.billboard({size:2,x:x+.5,y:y+.8,z:z+.5,t:flag});
+              bigmap[y][z*map.w+x] = {type:"flag"};
+            }
+            
+            else if(code == 6){ // door1
+              W.plane({w:2,h:2,x:x-.5,y:y+1.15,z:z+.4,t:door1});
+              bigmap[y][z*map.w+x] = {type:"door1"};
+            }
+            
+            else if(code == 7){ // door2
+              W.plane({w:2,h:2,x:x+.5,y:y+1.15,z:z+.4,t:door2});
+              bigmap[y][z*map.w+x] = {type:"door2"};
+            }
+            
+            else if(code == 8){ // window
+              W.plane({w:1,h:1,x:x+.5,y:y+.5,z:z+.1,t:pie});
+              bigmap[y][z*map.w+x] = {type:"window"};
             }
             
             // Chars 32-127: 0b0xxxyyzz
@@ -306,7 +351,7 @@ onload = () => {
               zz = code & 0b11;
               yy = (code >> 2) & 0b11;
               xxx = (code >> 4) & 0b111;
-              W[["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx]]({w:1,h:[1.2,1,1,1,1,1,1][yy],d:1,x:x+.5,y:y+.5,z:z+.5,ry:zz*-90,t:[grass,sand,brick,roof][yy]});
+              W[["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx]]({w:1,h:[1,1,1,1,1,1,1][yy],d:1,x:x+.5,y:y+.5,z:z+.5,ry:zz*-90,t:[grass,sand,brick,roof][yy]});
               bigmap[y][z*map.w+x] = {type:["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx], angle: zz};
             }
           }
@@ -321,10 +366,12 @@ onload = () => {
       W.group({n:"R",g:"H",size:1});
       
         // M: hero 3D model 
-        W.cube({n:"M",g:"H",w:.2,h:.5,d:.2,y:.25, b:"aa5"});
+        W.cube({n:"M",g:"H",w:.4,h:1,d:.4,y:.5, b:"aa5"});
     
       // Camera
-      W.camera({g:"H",z:2,y:1.3,rx:-10});
+      W.camera({g:"H",z:2,y:1.2,rx:-5,fov:42});
+      
+      W.sphere({size:200,t:sky,ns:1});
     
     W.clearColor("8Af");
     
@@ -361,7 +408,7 @@ onload = () => {
       
       // Rotate  left / right
       if(keys.r || keys.l){
-        hero.rcamera += (-keys.l + keys.r) * 3;
+        hero.rcamera += (-keys.l + keys.r) * 2;
       }
       
       // Move hero's group
@@ -372,6 +419,11 @@ onload = () => {
       
 
       // Debug
+      // blue bottom
+      /*W.move({n:"h1d",x:hero.x-.1,z:hero.z-.1,y:(collision(hero.x-.1, hero.y+.5, hero.z-.1)||hero.y)+.01});
+      W.move({n:"h2d",x:hero.x-.1,z:hero.z+.1,y:(collision(hero.x-.1, hero.y+.5, hero.z+.1)||hero.y)+.01});
+      W.move({n:"h3d",x:hero.x+.1,z:hero.z-.1,y:(collision(hero.x+.1, hero.y+.5, hero.z-.1)||hero.y)+.01});
+      W.move({n:"h4d",x:hero.x+.1,z:hero.z+.1,y:(collision(hero.x+.1, hero.y+.5, hero.z+.1)||hero.y)+.01});*/
       //console.log(hero, collision(hero.x-.1, hero.y, hero.z-.1));
       
       // red bottom
@@ -380,11 +432,6 @@ onload = () => {
       W.move({n:"h3",x:hero.x+.1,z:hero.z-.1,y:hero.y});
       W.move({n:"h4",x:hero.x+.1,z:hero.z+.1,y:hero.y});
       
-      // blue bottom
-      W.move({n:"h1d",x:hero.x-.1,z:hero.z-.1,y:(collision(hero.x-.1, hero.y, hero.z-.1)||hero.y)+.01});
-      W.move({n:"h2d",x:hero.x-.1,z:hero.z+.1,y:(collision(hero.x-.1, hero.y, hero.z+.1)||hero.y)+.01});
-      W.move({n:"h3d",x:hero.x+.1,z:hero.z-.1,y:(collision(hero.x+.1, hero.y, hero.z-.1)||hero.y)+.01});
-      W.move({n:"h4d",x:hero.x+.1,z:hero.z+.1,y:(collision(hero.x+.1, hero.y, hero.z+.1)||hero.y)+.01});
       
       // red top
       W.move({n:"h5",x:hero.x-.1,z:hero.z-.1,y:hero.y+.5});
@@ -413,12 +460,43 @@ onload = () => {
       if(nw > hero.y - .2 || ne > hero.y - .2 || sw > hero.y - .2 || se > hero.y - .2){
         hero.grounded = 1;
       }
+      //console.log(hero.y, nw)
+      if(nw > hero.y && ne > hero.y && sw > hero.y && se > hero.y && nw < hero.y - .2 && ne < hero.y - .2 && sw < hero.y - .2 && se < hero.y - .2){
+        hero.y += .1;
+        hero.grounded = 1;
+      }
+      
+      lastjump++;
 
       // jump
       if(hero.grounded && keys.s && !jumpdone){
-        hero.vy += 1.6;
+        if(lastjump < 60 && nthjump == 1){
+          hero.vy += 2.6;
+        }
+        else if(lastjump < 70 && nthjump == 2){
+          hero.vy = 3;
+        }
+        else {
+          hero.vy += swim ? 1 : 1.6;
+          nthjump = 0;
+        }
         jumpdone = 1;
+        lastjump = 0;
+        nthjump++;
       }
+      
+      // roulade
+      if(nthjump == 3 && lastjump == 18){
+        console.log("roulade");
+        W.move({n:"M",rx:-360,a:500});
+      }
+      
+      if(nthjump == 3 && lastjump == 110){
+        console.log("roulade");
+        W.move({n:"M",rx:0,a:1});
+      }
+      
+      //console.log(lastjump, nthjump);
       
       // Fall
       
@@ -430,21 +508,43 @@ onload = () => {
       //console.log(hero.vy);
 
       hero.y += hero.vy;
-      if(hero.y > lasty + .1) hero.y = lasty + .1;
+      if(nthjump ==3){
+        if(hero.y > lasty + .2) hero.y = lasty + .2;
+      }
+      else {
+        if(hero.y > lasty + .1) hero.y = lasty + .1;
+      }
+      
       if(
         hero.y < 1 && 
         (block = bigmap[Math.floor(hero.y)]?.[Math.floor(hero.z) * map.w + Math.floor(hero.x)].type != "water")
       ){
         hero.y = 1;
+        W.move({n:"M",rx:0,a:1});
       }
+      
+      // swim
+      
+      if(hero.y < .85 && W.next.M.rx != -70 && (lastjump > 120||nthjump == 1)) {
+        W.move({n:"M",y:.1,rx:-70,a:200});
+        nthjump = -1;
+        swim = 1;
+      }
+      else if(hero.y > .85 && W.next.M.rx != 0 && (lastjump > 120||nthjump == 1)) {
+        W.move({n:"M",y:.5,rx:0,a:200});
+        swim = 0;
+      }
+      console.log(swim)
+      
+      //console.log(lastjump);
       
       lastx = hero.x;
       lastz = hero.z;
       
       // Go front / back
       if(keys.u || keys.d){
-        dz = (-keys.u + keys.d) * Math.cos(-hero.rcamera*Math.PI/180) / 20;
-        dx = (-keys.u + keys.d) * Math.sin(-hero.rcamera*Math.PI/180) / 20;
+        dz = (-keys.u + keys.d) * Math.cos(-hero.rcamera*Math.PI/180) / (swim ? 40 : 20);
+        dx = (-keys.u + keys.d) * Math.sin(-hero.rcamera*Math.PI/180) / (swim ? 40 : 20);
       
         
         hero.x += dx;

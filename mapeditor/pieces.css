@@ -73,9 +73,9 @@
 .e1 .face {background:#77f8}
 
 /* Tree */
-.e2, .e3{font-size:200px}
+.e2, .e3,.e4, .e5, .e6, .e7, .e8 {font-size:200px}
 .e2 *,.e3 *{transform-origin:50% 100%}
 
 /* Fence */
-.e3{font-size:160px}
-.e3 div{transform:translateY(-100px)rotateX(-90deg)}
+.e3,.e4,.e5,.e6,.e7,.e8{font-size:160px}
+.e3 div,.e3 div,.e4 div,.e5 div,.e6 div,.e7 div,.e8 div{transform:translateY(-100px)rotateX(-90deg)translateY(-100px)}
