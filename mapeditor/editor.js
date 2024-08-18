@@ -161,16 +161,16 @@ preview = (t) => {
 // Return HTML code for current piece, at the given coordinates
 drawpiece = (x, y, z, cursor) => {
 
-  // pieces: 2: cube, 3: slope, 4: 45° wall, 5: slope corner flat, 6: slope corner angled, 7: reverse corner flat
+  // pieces: 2: cube, 3: slope, 4: 45° wall, 5: 45° grass-sand, 6: 45° sand-water, 7: pyramid
   // extra pieces: 1: water cube, 2: tree, 3: fence, 35: nothing
   if(extrapiece != 35){
     html = `<div class="piece s${piece} r${rotation} t${texture} e${extrapiece}" ${cursor || `x=${x} y=${y} z=${z}`} style='transform:translate3d(${x*200}px,${y*200}px,${z*200}px)rotateZ(${rotation*90}deg)'>`;
 
     if(piece || extrapiece == 1){
-      if(piece != 3 && piece != 5 && piece != 7 && piece != 6) html += `<div class="face up"></div>`;
+      if(piece != 3 && piece != 7) html += `<div class="face up"></div>`;
       if(extrapiece != 1) html += `<div class="face left ${["east","north","west","south"][rotation]}"></div>`;
       html += `<div class="face back ${["north","west","south","east"][rotation]}"></div>`;
-      if(extrapiece != 1) if(piece != 4 && piece != 5) html += `<div class="face right ${["west","south","east","north"][rotation]}"></div>`;
+      if(extrapiece != 1) if(piece != 4 && piece != 5 && piece != 6) html += `<div class="face right ${["west","south","east","north"][rotation]}"></div>`;
       if(extrapiece != 1) html += `<div class="face front ${["south","east","north","west"][rotation]}"></div>`;
     }
 

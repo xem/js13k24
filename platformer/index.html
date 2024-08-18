@@ -5,28 +5,19 @@
 <script src="w.js"></script>
 <canvas id=c width=800 height=600></canvas>
 <br>
-
-<canvas id=px style=border:1px solid></canvas>
-<br>
+<canvas id=px style='border:1px solid'></canvas>
 <img id=grass>
 <img id=sand>
 <img id=brick>
 <img id=roof>
 <img id=water>
 <img id=treec>
-<br>
-<img id=tree src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+DQo8ZGVmcz48c3R5bGU+QGZvbnQtZmFjZXtmb250LWZhbWlseTplbW9qaTtzcmM6dXJsKFR3ZW1vamkudHRmKX08L3N0eWxlPjwvZGVmcz4NCjx0ZXh0IHg9JzAnIHk9JzkwJyBmb250LXNpemU9Jzk1cHgnIGZvbnQtZmFtaWx5PSdlbW9qaSc+8J+MszwvdGV4dD48L3N2Zz4='>
-<br><img id=princess src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz4mI3gxZjQ3ODs8L3RleHQ+PC9zdmc+'>
-<img id=flag src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz4mI3gxZjZhOTs8L3RleHQ+PC9zdmc+'>
-<img id=door src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nLTE1JyB5PSc4MCcgZm9udC1zaXplPSc5NXB4Jz7wn5qqPC90ZXh0Pjwvc3ZnPg=='>
-<img id=door2 src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0iLTEwMCIgeT0iODAiIGZvbnQtc2l6ZT0iOTVweCIgdHJhbnNmb3JtPSJzY2FsZSgtMSwxKSI+8J+aqjwvdGV4dD48L3N2Zz4='>
-<img id=window src='data:image/svg+xml;base64,77u/PHN2ZyB3aWR0aD0nOTknIGhlaWdodD0nOTknIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHRleHQgeD0nMzAnIHk9JzMwJyBmb250LXNpemU9JzU1cHgnIHRyYW5zZm9ybT0ncm90YXRlKDQ1KSc+8J+rkzwvdGV4dD48L3N2Zz4='>
-<svg width='99' height='99' xmlns='http://www.w3.org/2000/svg'><text x='20' y='20' font-size='55px' transform='scale(1,1.2)rotate(45)'>🫓</text></svg>
-
-
+<img id=door1>
+<img id=door2>
+<img id=flag>
+<img id=princess>
+<img id=pie>
 <script>
-
-
 
 pxtex=(c,H,S,L,v=10,w=10,h=10,x=c.getContext`2d`,i,j,m=Math.random)=>{for(c.width=w,c.height=h,i=w;i--;)for(j=h;j--;)x.fillStyle=`hsl(${H+(m()-.5)*v},${S+(m()-.5)*v}%,${L+(m()-.5)*v}%)`,x.fillRect(i,j,1,1);return c.toDataURL()}
 
@@ -43,6 +34,7 @@ water.src = pxtex(px,195,40,50,3,20,20);
 // Coordinates of an object are at its center, ex: mario will be standing on the origin at [0, 0.5, 0]
 
 // Keyboard inputs
+keys = [];
 onkeydown=onkeyup=e=>{
   keys['s****lurd************************l**r************l*d***u**u'[e.which-32]]=+!!e.type[5];
   if(e.type == "keyup" && 's****lurd************************l**r************l*d***u**u'[e.which-32] == "s"){ jumpdone = 0 }
@@ -82,56 +74,81 @@ map = {
 
   // Layer 0:
 
-  '    $  '+
-  '    $  '+
-  '    $'+
-  '    $'+
-  '    $'+
-  '    $'+
-  '    $$$$$$'+
   '          '+
-  '          '+
+  '  $$$$$$  '+
+  ' $$$$ '+
+  ' $$$$ '+
+  ' $$$$ '+
+  ' $$$$ '+
+  ' $$ '+
+  ' $$$$ '+
+  '  $$$$$$  '+
   '          ',
-  
+
   // Layer 1:
 
-  '#########'+
+  '(;#####9('+
+  '8########8'+
   '##########'+
-  '#(########'+
-  '#(########'+
-  '#(########'+
   '##########'+
-  '#:########'+
-  '#(########'+
-  '#8###9*;##'+
-  '###(######',
+  '####((#+;#'+
+  '####((####'+
+  '##########'+
+  '##########'+
+  ':########:'+
+  '(;######9(',
 
   // Layer 2:
 
-  '##########'+
-  '##########'+
-  '#(########'+
-  '#(########'+
+  '~########|'+
   '##########'+
   '##########'+
   '##########'+
+  '####((+;##'+
+  '####((####'+
   '##########'+
   '##########'+
-  '##########',
+  '##########'+
+  '|########|',
 
   // Layer 3:
 
   '##########'+
   '##########'+
-  '#(########'+
   '##########'+
   '##########'+
-  '##########'+
+  '####((;###'+
+  '####((####'+
   '##########'+
   '##########'+
   '##########'+
   '##########',
 
+  // Layer 4:
+
+  '##########'+
+  '##########'+
+  '##########'+
+  '##########'+
+  '####((####'+
+  '####((####'+
+  '##########'+
+  '##########'+
+  '##########'+
+  '##########',
+
+  // Layer 7:
+
+  '##########'+
+  '##########'+
+  '##########'+
+  '##########'+
+  '####||####'+
+  '####||####'+
+  '##########'+
+  '##########'+
+  '##########'+
+  '##########',
 
   ]
 }
@@ -148,7 +165,7 @@ collision = (x, y, z, log, block, fine) => {
   if(!block)return null;
   //console.log(x1,y1,z1,block)
   if(block.type == "cube") return y1+1;
-  else if(block.type == "water") return y1+.6;
+  else if(block.type == "water") return y1+0.6;
   else if(block.type == "slope"){
     if(block.angle == 0){ // 1 towards -z, 0 towards +z
       fine = z - z1;
@@ -179,253 +196,294 @@ onload = () => {
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
   ctx.font='180px emoji';
-  ctx.fillText("🌳",0,160);
+  ctx.fillText("🌳",10,160);
   treec.src=px.toDataURL()
   
+  px.width=200;px.height=200;
+  ctx=px.getContext("2d");
+  ctx.scale(-1,1);
+  ctx.font='180px emoji';
+  ctx.fillText("🚪",-235,180);
+  door1.src=px.toDataURL()
   
+  px.width=200;px.height=200;
+  ctx=px.getContext("2d");
+  ctx.font='180px emoji';
+  ctx.fillText("🚪",-35,180);
+  door2.src=px.toDataURL()
   
+  px.width=100;px.height=100;
+  ctx=px.getContext("2d");
+  ctx.scale(.8,1);
+  ctx.rotate(Math.PI / 4);
+  ctx.font='100px emoji';
+  ctx.fillText("🫓",30,30);
+  pie.src=px.toDataURL()
   
-  var code,xxx,yy,zz;
+  px.width=200;px.height=200;
+  ctx=px.getContext("2d");
+  ctx.font='180px emoji';
+  ctx.fillText("🚩",-35,180);
+  flag.src=px.toDataURL()
   
-  // Reset keys
-  keys = {u:0, l:0, r:0, d:0, s:0};
+  px.width=200;px.height=200;
+  ctx=px.getContext("2d");
+  ctx.font='180px emoji';
+  ctx.fillText("👸",5,170);
+  princess.src=px.toDataURL()
   
-  // Create scene
-  W.reset(c);
-  W.ambient(0.7);
-  W.light({x:.1,y:-.3,z:.2});
-  for(y=map.layers.length;y--;){
-    bigmap[y] = [];
-    for(x=map.w;x--;){
-      for(z=map.h;z--;){
-        bigmap[y][z*map.w+x] = {type: null }
-        if(map.layers[y][x*map.w+z]){
-          
-          code = map.layers[y][z*map.w+x].codePointAt(0);
+  setTimeout(()=> {
   
-          // Chars 0-31: various pieces
-          //
-          //     0000000: \0  reserved
-          //     0000001: ?   water
-          //     0000010: ?   tree
-          //     0000011: ?   fence
-          //     ...
-          //
-          // Char 35: nothing
-          //
-          //     0100011: #   nothing
-  
-          if(code == 35) continue; // air
-          
-          if(code == 1){ // water
-            W.cube({w:1,h:.85,d:1,x:x+.5,y:y+.5,z:z+.5,t:water});
-            bigmap[y][z*map.w+x] = {type:"water"};
-          }
-          
-          else if(code == 2){ // tree
-            W.billboard({size:2,x:x,y:y+1,z:z+1,t:treec});
-            bigmap[y][z*map.w+x] = {type:"tree"};
-          }
-          
-          // Chars 32-127: 0b0xxxyyzz
-          //
-          // - zz (bits 0-1): rotation
-          //     0°
-          //     90°
-          //     180°
-          //     270°
-          //
-          //  - yy (bits 2-3): texture (pick 4)
-          //     sand
-          //     grass
-          //     rock
-          //     ice
-          //     brick
-          //     wood
-          //     ...
-          //
-          //  - xxx (bits 4-6): piece
-          //     000-001 reserved (chars 0-31)
-          //     010 cube
-          //     011 slope
-          //     100 45° wall
-          //     101 slope corner flat
-          //     110 slope corner angled
-          //     111 pyramid
-          
-          else if(code > 31){
-            zz = code & 0b11;
-            yy = (code >> 2) & 0b11;
-            xxx = (code >> 4) & 0b111;
-            W[["","","cube", "slope","cube"][xxx]]({w:1,h:[1.2,1,1][yy],d:1,x:x+.5,y:y+.5,z:z+.5,ry:zz*-90,t:[grass,sand,brick][yy]});
-            bigmap[y][z*map.w+x] = {type:["","","cube", "slope"][xxx], angle: zz};
+    var code,xxx,yy,zz;
+    
+    // Reset keys
+    keys = {u:0, l:0, r:0, d:0, s:0};
+    
+    // Create scene
+    W.reset(c);
+    W.ambient(0.7);
+    W.light({x:.25,y:-.3,z:.2});
+    for(y=map.layers.length;y--;){
+      bigmap[y] = [];
+      for(x=map.w;x--;){
+        for(z=map.h;z--;){
+          bigmap[y][z*map.w+x] = {type: null }
+          if(map.layers[y][x*map.w+z]){
+            
+            code = map.layers[y][z*map.w+x].codePointAt(0);
+    
+            // Chars 0-31: various pieces
+            //
+            //     0000000: \0  reserved
+            //     0000001: ?   water
+            //     0000010: ?   tree
+            //     0000011: ?   fence
+            //     ...
+            //
+            // Char 35: nothing
+            //
+            //     0100011: #   nothing
+    
+            if(code == 35) continue; // air
+            
+            if(code == 1){ // water
+              W.cube({w:1,h:.85,d:1,x:x+.5,y:y+.5,z:z+.5,t:water});
+              bigmap[y][z*map.w+x] = {type:"water"};
+            }
+            
+            else if(code == 2){ // tree
+              W.billboard({size:2,x:x+.5,y:y+.8,z:z+.5,t:treec});
+              bigmap[y][z*map.w+x] = {type:"tree"};
+            }
+            
+            // Chars 32-127: 0b0xxxyyzz
+            //
+            // - zz (bits 0-1): rotation
+            //     0°
+            //     90°
+            //     180°
+            //     270°
+            //
+            //  - yy (bits 2-3): texture (pick 4)
+            //     sand
+            //     grass
+            //     rock
+            //     ice
+            //     brick
+            //     wood
+            //     ...
+            //
+            //  - xxx (bits 4-6): piece
+            //     000-001 reserved (chars 0-31)
+            //     010 cube
+            //     011 slope
+            //     100 45° wall
+            //     101 slope corner flat
+            //     110 slope corner angled
+            //     111 pyramid
+            
+            else if(code > 31){
+              zz = code & 0b11;
+              yy = (code >> 2) & 0b11;
+              xxx = (code >> 4) & 0b111;
+              W[["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx]]({w:1,h:[1.2,1,1,1,1,1,1][yy],d:1,x:x+.5,y:y+.5,z:z+.5,ry:zz*-90,t:[grass,sand,brick,roof][yy]});
+              bigmap[y][z*map.w+x] = {type:["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx], angle: zz};
+            }
           }
         }
       }
     }
-  }
-  
-  // H : hero group (moves, jumps, collides)
-  W.group({n:"H",size:1,x:hero.x,y:hero.y,z:hero.z});
-  
-    // R: hero rotation group 
-    W.group({n:"R",g:"H",size:1});
     
-      // M: hero 3D model 
-      W.cube({n:"M",g:"H",w:.2,h:.5,d:.2,y:.25, b:"aa5"});
-  
-    // Camera
-    W.camera({g:"H",z:2,y:1.5,rx:-15});
-  
-  W.clearColor("8Af");
-  
-  
-  // Debug
-  for(i = 10; i--;){
-    for(j = 10; j--;){
-      //W.sphere({x:i,z:j,y:0,size:.05,b:"000"});
-      //W.sphere({x:i,z:j,y:1,size:.05,b:"000"});
-      //W.sphere({x:i,z:j,y:2,size:.05,b:"000"});
-    }
-  }
-  
-  /*W.sphere({n:"h1",x:hero.x-.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
-  W.sphere({n:"h2",x:hero.x-.2,z:hero.z+.2,y:hero.y,size:.05,b:"F00"});
-  W.sphere({n:"h3",x:hero.x+.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
-  W.sphere({n:"h4",x:hero.x+.2,z:hero.z+.2,y:hero.y,size:.05,b:"F00"});
-  W.sphere({n:"h1d",x:hero.x-.2,z:hero.z-.2,y:hero.y,size:.05,b:"00F"});
-  W.sphere({n:"h2d",x:hero.x-.2,z:hero.z+.2,y:hero.y,size:.05,b:"00F"});
-  W.sphere({n:"h3d",x:hero.x+.2,z:hero.z-.2,y:hero.y,size:.05,b:"00F"});
-  W.sphere({n:"h4d",x:hero.x+.2,z:hero.z+.2,y:hero.y,size:.05,b:"00F"});
-  W.sphere({n:"h5",x:hero.x-.2,z:hero.z-.2,y:hero.y+.5,size:.05,b:"F00"});
-  W.sphere({n:"h6",x:hero.x-.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});
-  W.sphere({n:"h7",x:hero.x+.2,z:hero.z-.2,y:hero.y+.5,size:.05,b:"F00"});
-  W.sphere({n:"h8",x:hero.x+.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});*/
-  
-  
-  // Game loop
-  setInterval(()=>{
-  
-    // tmp
-    var x, y, z, col, dx, dz, nw, ne, sw, se, lastx, lastz;
+    // H : hero group (moves, jumps, collides)
+    W.group({n:"H",size:1,x:hero.x,y:hero.y,z:hero.z});
     
-    // Rotate  left / right
-    if(keys.r || keys.l){
-      hero.rcamera += (-keys.l + keys.r) * 3;
-    }
+      // R: hero rotation group 
+      W.group({n:"R",g:"H",size:1});
+      
+        // M: hero 3D model 
+        W.cube({n:"M",g:"H",w:.2,h:.5,d:.2,y:.25, b:"aa5"});
     
-    // Move hero's group
-    W.move({n:"R", rz: hero.rcamera});
-    W.move({n:"H", x:hero.x, y: hero.y, z:hero.z, ry: hero.ry - hero.rcamera});
+      // Camera
+      W.camera({g:"H",z:2,y:1.3,rx:-10});
     
-    //console.log(hero.rcamera, hero.x, hero.z);
+    W.clearColor("8Af");
     
-
+    
     // Debug
-    //console.log(hero, collision(hero.x-.1, hero.y, hero.z-.1));
-    
-    // red bottom
-    /*W.move({n:"h1",x:hero.x-.1,z:hero.z-.1,y:hero.y});
-    W.move({n:"h2",x:hero.x-.1,z:hero.z+.1,y:hero.y});
-    W.move({n:"h3",x:hero.x+.1,z:hero.z-.1,y:hero.y});
-    W.move({n:"h4",x:hero.x+.1,z:hero.z+.1,y:hero.y});
-    
-    // blue bottom
-    W.move({n:"h1d",x:hero.x-.1,z:hero.z-.1,y:(collision(hero.x-.1, hero.y, hero.z-.1)||hero.y)+.01});
-    W.move({n:"h2d",x:hero.x-.1,z:hero.z+.1,y:(collision(hero.x-.1, hero.y, hero.z+.1)||hero.y)+.01});
-    W.move({n:"h3d",x:hero.x+.1,z:hero.z-.1,y:(collision(hero.x+.1, hero.y, hero.z-.1)||hero.y)+.01});
-    W.move({n:"h4d",x:hero.x+.1,z:hero.z+.1,y:(collision(hero.x+.1, hero.y, hero.z+.1)||hero.y)+.01});
-    
-    // red top
-    W.move({n:"h5",x:hero.x-.1,z:hero.z-.1,y:hero.y+.5});
-    W.move({n:"h6",x:hero.x-.1,z:hero.z+.1,y:hero.y+.5});
-    W.move({n:"h7",x:hero.x+.1,z:hero.z-.1,y:hero.y+.5});
-    W.move({n:"h8",x:hero.x+.1,z:hero.z+.1,y:hero.y+.5});*/
-
-    nw = (collision(hero.x-.15, hero.y, hero.z-.15)||hero.y)+.01;
-    ne = (collision(hero.x+.15, hero.y, hero.z-.15)||hero.y)+.01;
-    sw = (collision(hero.x-.15, hero.y, hero.z+.15)||hero.y)+.01;
-    se = (collision(hero.x+.15, hero.y, hero.z+.15)||hero.y)+.01;
-    
-    // Grounded
-    hero.grounded = 0;
-    if(nw || ne || sw || se) {
-      //if(Math.max(nw, ne, sw, se) < hero.y + 0.1){
-        hero.y = Math.max(nw, ne, sw, se);
-      //}
-    }
-
-    nw = (collision(hero.x-.15, hero.y-.2, hero.z-.15));
-    ne = (collision(hero.x+.15, hero.y-.2, hero.z-.15));
-    sw = (collision(hero.x-.15, hero.y-.2, hero.z+.15));
-    se = (collision(hero.x+.15, hero.y-.2, hero.z+.15));
-    
-    if(nw > hero.y - .2 || ne > hero.y - .2 || sw > hero.y - .2 || se > hero.y - .2){
-      hero.grounded = 1;
-    }
-
-    // jump
-    if(hero.grounded && keys.s && !jumpdone){
-      hero.vy += .7;
-      jumpdone = 1;
+    for(i = 10; i--;){
+      for(j = 10; j--;){
+        //W.sphere({x:i,z:j,y:0,size:.05,b:"000"});
+        //W.sphere({x:i,z:j,y:1,size:.05,b:"000"});
+        //W.sphere({x:i,z:j,y:2,size:.05,b:"000"});
+      }
     }
     
-    // Fall
+    /*W.sphere({n:"h1",x:hero.x-.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
+    W.sphere({n:"h2",x:hero.x-.2,z:hero.z+.2,y:hero.y,size:.05,b:"F00"});
+    W.sphere({n:"h3",x:hero.x+.2,z:hero.z-.2,y:hero.y,size:.05,b:"F00"});
+    W.sphere({n:"h4",x:hero.x+.2,z:hero.z+.2,y:hero.y,size:.05,b:"F00"});
+    W.sphere({n:"h1d",x:hero.x-.2,z:hero.z-.2,y:hero.y,size:.05,b:"00F"});
+    W.sphere({n:"h2d",x:hero.x-.2,z:hero.z+.2,y:hero.y,size:.05,b:"00F"});
+    W.sphere({n:"h3d",x:hero.x+.2,z:hero.z-.2,y:hero.y,size:.05,b:"00F"});
+    W.sphere({n:"h4d",x:hero.x+.2,z:hero.z+.2,y:hero.y,size:.05,b:"00F"});
+    W.sphere({n:"h5",x:hero.x-.2,z:hero.z-.2,y:hero.y+.5,size:.05,b:"F00"});
+    W.sphere({n:"h6",x:hero.x-.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});
+    W.sphere({n:"h7",x:hero.x+.2,z:hero.z-.2,y:hero.y+.5,size:.05,b:"F00"});
+    W.sphere({n:"h8",x:hero.x+.2,z:hero.z+.2,y:hero.y+.5,size:.05,b:"F00"});*/
     
-    hero.vy -= G;
     
+    // Game loop
+    setInterval(()=>{
     
-    if(hero.vy < -G) hero.vy = -G; 
-    console.log(hero.vy);
-
-    hero.y += hero.vy;
-    if(hero.y < 0) hero.y = 0;
-    
-    lastx = hero.x;
-    lastz = hero.z;
-    
-    // Go front / back
-    if(keys.u || keys.d){
-      dz = (-keys.u + keys.d) * Math.cos(-hero.rcamera*Math.PI/180) / 20;
-      dx = (-keys.u + keys.d) * Math.sin(-hero.rcamera*Math.PI/180) / 20;
-    
+      // tmp
+      var x, y, z, col, dx, dz, nw, ne, sw, se, lastx, lastz, lasty;
+      lasty = hero.y;
       
-      hero.x += dx;
-      nw = (collision(hero.x-.15, hero.y, hero.z-.15));
-      ne = (collision(hero.x+.15, hero.y, hero.z-.15));
-      sw = (collision(hero.x-.15, hero.y, hero.z+.15));
-      se = (collision(hero.x+.15, hero.y, hero.z+.15));
-      nw2 = (collision(hero.x-.15, hero.y+.5, hero.z-.15));
-      ne2 = (collision(hero.x+.15, hero.y+.5, hero.z-.15));
-      sw2 = (collision(hero.x-.15, hero.y+.5, hero.z+.15));
-      se2 = (collision(hero.x+.15, hero.y+.5, hero.z+.15));
+      // Rotate  left / right
+      if(keys.r || keys.l){
+        hero.rcamera += (-keys.l + keys.r) * 3;
+      }
       
+      // Move hero's group
+      W.move({n:"R", rz: hero.rcamera});
+      W.move({n:"H", x:hero.x, y: hero.y, z:hero.z, ry: hero.ry - hero.rcamera});
+      
+      //console.log(hero.rcamera, hero.x, hero.z);
+      
+
+      // Debug
+      //console.log(hero, collision(hero.x-.1, hero.y, hero.z-.1));
+      
+      // red bottom
+      /*W.move({n:"h1",x:hero.x-.1,z:hero.z-.1,y:hero.y});
+      W.move({n:"h2",x:hero.x-.1,z:hero.z+.1,y:hero.y});
+      W.move({n:"h3",x:hero.x+.1,z:hero.z-.1,y:hero.y});
+      W.move({n:"h4",x:hero.x+.1,z:hero.z+.1,y:hero.y});
+      
+      // blue bottom
+      W.move({n:"h1d",x:hero.x-.1,z:hero.z-.1,y:(collision(hero.x-.1, hero.y, hero.z-.1)||hero.y)+.01});
+      W.move({n:"h2d",x:hero.x-.1,z:hero.z+.1,y:(collision(hero.x-.1, hero.y, hero.z+.1)||hero.y)+.01});
+      W.move({n:"h3d",x:hero.x+.1,z:hero.z-.1,y:(collision(hero.x+.1, hero.y, hero.z-.1)||hero.y)+.01});
+      W.move({n:"h4d",x:hero.x+.1,z:hero.z+.1,y:(collision(hero.x+.1, hero.y, hero.z+.1)||hero.y)+.01});
+      
+      // red top
+      W.move({n:"h5",x:hero.x-.1,z:hero.z-.1,y:hero.y+.5});
+      W.move({n:"h6",x:hero.x-.1,z:hero.z+.1,y:hero.y+.5});
+      W.move({n:"h7",x:hero.x+.1,z:hero.z-.1,y:hero.y+.5});
+      W.move({n:"h8",x:hero.x+.1,z:hero.z+.1,y:hero.y+.5});*/
+
+      nw = (collision(hero.x-.15, hero.y, hero.z-.15)||hero.y)+.02;
+      ne = (collision(hero.x+.15, hero.y, hero.z-.15)||hero.y)+.02;
+      sw = (collision(hero.x-.15, hero.y, hero.z+.15)||hero.y)+.02;
+      se = (collision(hero.x+.15, hero.y, hero.z+.15)||hero.y)+.02;
+      
+      // Grounded
+      hero.grounded = 0;
+      if(nw || ne || sw || se) {
+        //if(Math.max(nw, ne, sw, se) < hero.y + 0.1){
+          hero.y = Math.max(nw, ne, sw, se);
+        //}
+      }
+
+      nw = (collision(hero.x-.15, hero.y-.2, hero.z-.15));
+      ne = (collision(hero.x+.15, hero.y-.2, hero.z-.15));
+      sw = (collision(hero.x-.15, hero.y-.2, hero.z+.15));
+      se = (collision(hero.x+.15, hero.y-.2, hero.z+.15));
+      
+      if(nw > hero.y - .2 || ne > hero.y - .2 || sw > hero.y - .2 || se > hero.y - .2){
+        hero.grounded = 1;
+      }
+
+      // jump
+      if(hero.grounded && keys.s && !jumpdone){
+        hero.vy += 1.6;
+        jumpdone = 1;
+      }
+      
+      // Fall
+      
+      hero.vy -= G;
+      
+      
+      if(hero.vy < -G) hero.vy = -G; 
+      
+      //console.log(hero.vy);
+
+      hero.y += hero.vy;
+      if(hero.y > lasty + .1) hero.y = lasty + .1;
       if(
-        nw > hero.y + .2 || ne > hero.y + .2 || sw > hero.y + .2 || se > hero.y + .2
-        || nw2 > hero.y + .5 || ne2 > hero.y + .5 || sw2 > hero.y + .5 || se2 > hero.y + .5
+        hero.y < 1 && 
+        (block = bigmap[Math.floor(hero.y)]?.[Math.floor(hero.z) * map.w + Math.floor(hero.x)].type != "water")
       ){
-        hero.x = lastx;
-      }   
-
+        hero.y = 1;
+      }
       
-      hero.z += dz;
-      nw = (collision(hero.x-.15, hero.y, hero.z-.15));
-      ne = (collision(hero.x+.15, hero.y, hero.z-.15));
-      sw = (collision(hero.x-.15, hero.y, hero.z+.15));
-      se = (collision(hero.x+.15, hero.y, hero.z+.15));
-      nw2 = (collision(hero.x-.15, hero.y+.5, hero.z-.15));
-      ne2 = (collision(hero.x+.15, hero.y+.5, hero.z-.15));
-      sw2 = (collision(hero.x-.15, hero.y+.5, hero.z+.15));
-      se2 = (collision(hero.x+.15, hero.y+.5, hero.z+.15));
-      //console.log("lr", lastz, hero.y, nw, hero.z);
-      if(
-        nw > hero.y + .2 || ne > hero.y + .2 || sw > hero.y + .2 || se > hero.y + .2
-        || nw2 > hero.y + .5 || ne2 > hero.y + .5 || sw2 > hero.y + .5 || se2 > hero.y + .5
-      ){
-        hero.z = lastz;
-      } 
-    }
-    
-  },16);
+      lastx = hero.x;
+      lastz = hero.z;
+      
+      // Go front / back
+      if(keys.u || keys.d){
+        dz = (-keys.u + keys.d) * Math.cos(-hero.rcamera*Math.PI/180) / 20;
+        dx = (-keys.u + keys.d) * Math.sin(-hero.rcamera*Math.PI/180) / 20;
+      
+        
+        hero.x += dx;
+        nw = (collision(hero.x-.15, hero.y, hero.z-.15));
+        ne = (collision(hero.x+.15, hero.y, hero.z-.15));
+        sw = (collision(hero.x-.15, hero.y, hero.z+.15));
+        se = (collision(hero.x+.15, hero.y, hero.z+.15));
+        nw2 = (collision(hero.x-.15, hero.y+.5, hero.z-.15));
+        ne2 = (collision(hero.x+.15, hero.y+.5, hero.z-.15));
+        sw2 = (collision(hero.x-.15, hero.y+.5, hero.z+.15));
+        se2 = (collision(hero.x+.15, hero.y+.5, hero.z+.15));
+        
+        if(
+          nw > hero.y + .2 || ne > hero.y + .2 || sw > hero.y + .2 || se > hero.y + .2
+          || nw2 > hero.y + .5 || ne2 > hero.y + .5 || sw2 > hero.y + .5 || se2 > hero.y + .5
+        ){
+          hero.x = lastx;
+        }   
+
+        
+        hero.z += dz;
+        nw = (collision(hero.x-.15, hero.y, hero.z-.15));
+        ne = (collision(hero.x+.15, hero.y, hero.z-.15));
+        sw = (collision(hero.x-.15, hero.y, hero.z+.15));
+        se = (collision(hero.x+.15, hero.y, hero.z+.15));
+        nw2 = (collision(hero.x-.15, hero.y+.5, hero.z-.15));
+        ne2 = (collision(hero.x+.15, hero.y+.5, hero.z-.15));
+        sw2 = (collision(hero.x-.15, hero.y+.5, hero.z+.15));
+        se2 = (collision(hero.x+.15, hero.y+.5, hero.z+.15));
+        //console.log("lr", lastz, hero.y, nw, hero.z);
+        if(
+          nw > hero.y + .2 || ne > hero.y + .2 || sw > hero.y + .2 || se > hero.y + .2
+          || nw2 > hero.y + .5 || ne2 > hero.y + .5 || sw2 > hero.y + .5 || se2 > hero.y + .5
+        ){
+          hero.z = lastz;
+        } 
+      }
+      
+    },16);
+  },200);
 }
 </script>
