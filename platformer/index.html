@@ -1,4 +1,5 @@
 ﻿<style>
+body{margin:0}
 @font-face{font-family:emoji;src:url(Twemoji.ttf)}
 *{font-family:emoji}
 </style>
@@ -22,6 +23,11 @@
 <img id=sky>
 </p>
 <script>
+frame = 0;
+walkframe=0;
+walking=0;
+c.width=innerWidth;
+c.height=innerHeight;
 
 pxtex=(c,H,S,L,v=10,w=10,h=10,x=c.getContext`2d`,i,j,m=Math.random)=>{for(c.width=w,c.height=h,i=w;i--;)for(j=h;j--;)x.fillStyle=`hsl(${H+(m()-.5)*v},${S+(m()-.5)*v}%,${L+(m()-.5)*v}%)`,x.fillRect(i,j,1,1);return c.toDataURL()}
 
@@ -29,7 +35,7 @@ grass.src = pxtex(px,105,65,50,10,20,20);
 sand.src = pxtex(px,45,85,75,10,20,20);
 brick.src = pxtex(px,75,0,90,10,20,20);
 roof.src = pxtex(px,10,85,55,10,20,20);
-water.src = pxtex(px,200,90,50,3,20,20);
+water.src = pxtex(px,200,90,50,5,20,20);
 
 // +X = right, +Z = near, +Y = up
 // -X = left, -Z = far, -Y = down
@@ -41,16 +47,16 @@ water.src = pxtex(px,200,90,50,3,20,20);
 keys = [];
 onkeydown=onkeyup=e=>{
   keys['s****lurd************************l**r************l*d***u**u'[e.which-32]]=+!!e.type[5];
-  if(e.type == "keyup" && 's****lurd************************l**r************l*d***u**u'[e.which-32] == "s"){ jumpdone = 0 }
+  if(e.type === "keyup" && 's****lurd************************l**r************l*d***u**u'[e.which-32] === "s"){ jumpdone = 0 }
 }
 
 jumpdone = 0;
 
 // Hero
 hero = {
-  x: 7,
+  x: 9,
   y: 3,
-  z: 17,
+  z: 16,
   
   ry: 0,
   rmodel: 0,
@@ -124,20 +130,20 @@ map = {
 
   // Layer 2:
 
-  '   ((  '+
-  '((((((((((((  '+
-  '(((,,((($$  '+
-  '(((((((($  '+
-  '  $$(((((((((((((($  '+
-  '   $(((((($$ '+
-  '   $(((($ '+
-  '   $(((($ '+
-  '   $$(((($$ '+
-  '   $$$$$$$$$$$$$$$(($$  '+
-  '    $$$$$$$$$$$$$$(($   '+
-  '    $$                '+
-  '    $$                '+
-  '    $$          $   '+
+  '    ((((((((((((((((((   '+
+  '((((((((((((   '+
+  '(((,,((($$   '+
+  '(((((((($   '+
+  '  $$(((((((((((((($   '+
+  '   $(((((($$  '+
+  '   $(((($  '+
+  '   $(((($  '+
+  '   $$(((($$  '+
+  '   $$$$$$$$$$$$$$$$$$$   '+
+  '    $$$$$$$$$$$$$$$$$    '+
+  '    $$                 '+
+  '    $$                 '+
+  '    $$          $    '+
   '    $$$ $$$$   $$  '+
   '     $$$$$$$$  '+
   '     $$$$$$$$  '+
@@ -147,53 +153,53 @@ map = {
 
   // Layer 3:
 
-  '0000(################(00 '+
-  '###(((###((((((###(((## '+
-  '#####(###(##(###(### '+
-  '#####(###(####(###(#### '+
-  ' #####(((((####(((((#### '+
-  ' #########(####(####### '+
-  ' #########(##(######### '+
-  ' ##########(##(######### '+
-  ' ####(##(###### '+
-  ' ####################### '+
-  ' ##################### '+
-  ' ###################### '+
-  ' ################### '+
-  ' ###################### '+
-  ' ####################### '+
-  ' ########################'+
-  ' #######################'+
-  ' #######################'+
-  ' ########################'+
-  ' 222222222222222#########',
-
+  '0000((((((((((((((((((   '+
+  '###(((###((((((###(((##1'+
+  '#####(###(##(###(###1'+
+  '#####(###(####(###(####1'+
+  '3#####(((((####(((((####1'+
+  '3#########(####(########1'+
+  '3##########(##(#########1'+
+  '3##########(##(#########1'+
+  '3####(##(######1'+
+  '3#######################1'+
+  '3#####################1'+
+  '3#######################1'+
+  '3##########13#######1'+
+  '3############13#########1'+
+  '3############13#########1'+
+  '3############13##########'+
+  '3############13##########'+
+  '3###########13##########'+
+  '3############13##########'+
+  '               ##########',
+   
   // Layer 4:
 
-  '####(################(##1'+
-  '####(((###((((((###(((##1'+
-  '######(###(####(###(####1'+
-  '######(##((####(###(####1'+
-  '3#####(((((####(((((####1'+
-  '3#######(####(######1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3#######################1'+
-  '3########################'+
-  '3########################'+
-  '3########################'+
-  '3########################'+
-  '3########################',
-
+  '####((((((((((((((((((000'+
+  '####(((###((((((###(((###'+
+  '######(###(####(###(#####'+
+  '######(##((####(###(#####'+
+  '######(((((####(((((#####'+
+  '########(####(#######'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '222222222222222##########',
+   
   // Layer 5:
 
-  '####(################(###'+
+  '####((((((((((((((((((###'+
   '####(((############(((###'+
   '######(####((((####(#####'+
   '######(####((((####(#####'+
@@ -216,7 +222,7 @@ map = {
 
   // Layer 6:
 
-  '####(################(###'+
+  '####((((((((((((((((((###'+
   '####(((############(((###'+
   '######(############(#####'+
   '######(############(#####'+
@@ -239,7 +245,7 @@ map = {
 
   // Layer 7:
 
-  '####(################(###'+
+  '####((((((((((((((((((###'+
   '####(((############(((###'+
   '######(############(#####'+
   '######(############(#####'+
@@ -262,11 +268,11 @@ map = {
 
   // Layer 8:
 
+  '#####(((((((((((((((#####'+
   '#########################'+
-  '######,##################'+
-  '######,############,#####'+
-  '######,############,#####'+
-  '######<<<<,####,<<<<#####'+
+  '#########################'+
+  '#########################'+
+  '#######<<<,####,<<<######'+
   '##########<<<<<<#########'+
   '#########################'+
   '#########################'+
@@ -285,10 +291,10 @@ map = {
 
   // Layer 9:
 
-  '####|#,,,,,####,,,,,|####'+
-  '######,,,,,####,,,,,#####'+
-  '######,,,,,####,,,,,#####'+
-  '######|<<<,,,,,,<<|<#####'+
+  '###########((((##########'+
+  '#########################'+
+  '#########################'+
+  '#######<<<,,,,,,<<<######'+
   '##########<<<<<<#########'+
   '#########################'+
   '#########################'+
@@ -308,10 +314,10 @@ map = {
 
   // Layer 10:
 
-  '###########(##(##########'+
+  '####|######((((#####|####'+
   '###########(##(##########'+
   '###########((((##########'+
-  '#########################'+
+  '######|###########|######'+
   '#########################'+
   '#########################'+
   '#########################'+
@@ -331,7 +337,7 @@ map = {
 
   // Layer 11:
 
-  '###########(##(##########'+
+  '###########((((##########'+
   '###########(##(##########'+
   '###########((((##########'+
   '#########################'+
@@ -354,7 +360,7 @@ map = {
 
   // Layer 12:
 
-  '###########(##(##########'+
+  '###########((((##########'+
   '###########(##(##########'+
   '###########((((##########'+
   '#########################'+
@@ -487,6 +493,28 @@ map = {
   '#########################'+
   '#########################'+
   '#########################',
+  
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################'+
+  '#########################',
+  
 
   // Layer 17:
 
@@ -531,24 +559,24 @@ collision = (x, y, z, log, block, fine) => {
   }
   if(!block)return null;
   //console.log(x1,y1,z1,block)
-  if(block.type == "cube") return y1+1;
-  if(block.type == "fence") return y1+1;
-  else if(block.type == "water") return y1+0.7;
-  else if(block.type == "slope"){
-    if(block.angle == 0){ // 1 towards -z, 0 towards +z
+  if(block.type === "cube") return y1+1;
+  if(block.type === "fence") return (z-z1)>.9?y1+.8:y1-1;
+  else if(block.type === "water") return y1+0.7;
+  else if(block.type === "slope"){
+    if(block.angle === 0){ // 1 towards -z, 0 towards +z
       fine = z - z1;
       return y1+1-fine;
     }
-    else if(block.angle == 2){ // 0 towards -z, 1 towards +z
+    else if(block.angle === 2){ // 0 towards -z, 1 towards +z
       fine = z - z1;
       return y1+fine;
     }
     
-    if(block.angle == 3){ // 1 towards -x, 0 towards +x
+    if(block.angle === 3){ // 1 towards -x, 0 towards +x
       fine = x - x1;
       return y1+1-fine;
     }
-    else if(block.angle == 1){ // 0 towards -x, 1 towards +x
+    else if(block.angle === 1){ // 0 towards -x, 1 towards +x
       fine = x - x1;
       return y1+fine;
     }
@@ -591,28 +619,37 @@ onload = () => {
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
   ctx.font='100px emoji';
-  ctx.fillText("🚩",70,180);
+  ctx.fillText("🚩",70,190);
   flag.src=px.toDataURL()
   
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
   ctx.font='180px emoji';
   ctx.fillText("👸",7,170);
+  //ctx.fillText("🏃‍♀️",7,170);
   princess.src=px.toDataURL()
   
   // Fence
   px.width=200;px.height=200;
   ctx=px.getContext("2d");
-  ctx.fillStyle="#FB5";
-  ctx.fillRect(0,50,199,20);
-  ctx.fillRect(0,130,199,20);
-  ctx.fillRect(25,20,50,179);
-  ctx.fillRect(125,20,50,179);
+  ctx.fillStyle="#c82";
+  ctx.fillRect(0,80,200,20);
+  ctx.fillRect(0,130,200,20);
+  var gradient = ctx.createLinearGradient(0,0,100,0);
+  gradient.addColorStop(0,"#940");
+  gradient.addColorStop(1,"#eb6");
+  ctx.fillStyle=gradient;
+  ctx.fillRect(25,40,50,180);
+  var gradient = ctx.createLinearGradient(100,0,200,0);
+  ctx.fillStyle=gradient;
+  gradient.addColorStop(0,"#940");
+  gradient.addColorStop(1,"#eb6");
+  ctx.fillRect(125,40,50,180);
   fenc.src=px.toDataURL()
   
   // Sky
   px.width=512;px.height=512;
-  pxtex(px,200,90,40,5,512,512);
+  pxtex(px,200,90,35,2,512,512);
   var gradient = ctx.createLinearGradient(0,150,0,260);
   gradient.addColorStop(0,"#08D");
   gradient.addColorStop(1,"#6CF");
@@ -640,8 +677,8 @@ onload = () => {
     
     // Create scene
     W.reset(c);
-    W.ambient(0.5);
-    W.light({x:.1,y:-.5,z:-.4});
+    W.ambient(0.4);
+    W.light({x:-3,y:-10,z:-5});
     
     for(y=map.layers.length;y--;){
       bigmap[y] = [];
@@ -664,44 +701,45 @@ onload = () => {
             //
             //     0100011: #   nothing
     
-            if(code == 35) continue; // air
+            if(code === 35) continue; // air
             
-            if(code == 1){ // water
-              W.cube({w:1,h:x==0?1:.85,d:1,x:x+.5,y:y+.5,z:z+.5,t:water});
+            if(code === 1){ // water
+              W.cube({w:1,h:x===0?1:.85,d:1,x:x+.5,y:y+.5,z:z+.5,t:water});
               bigmap[y][z*map.w+x] = {type:"water"};
             }
             
-            else if(code == 2){ // tree
+            else if(code === 2){ // tree
               W.billboard({size:1.5,x:x+.4,y:y+.75,z:z+.5,t:treec,ns:1});
               bigmap[y][z*map.w+x] = {type:"tree"};
             }
             
-            else if(code == 3){ // fence
+            else if(code === 3){ // fence
               W.plane({w:1,h:1,x:x+.5,y:y+.5,z:z+1,t:fenc});
+              W.plane({w:1,h:1,x:x+.5,y:y+.5,z:z+1,t:fenc,ry:180});
               bigmap[y][z*map.w+x] = {type:"fence"};
             }
             
-            else if(code == 4){ // princess
-              W.plane({w:2,h:2,x:x+.75,y:y,z:z+.1,t:princess});
+            else if(code === 4){ // princess
+              W.plane({w:1.5,h:1.5,x:x+.75,y:y,z:z+.1,t:princess});
               bigmap[y][z*map.w+x] = {type:"princess"};
             }
             
-            /*else if(code == 5){ // flag
+            /*else if(code === 5){ // flag
               W.billboard({size:2,x:x+.5,y:y+.8,z:z+.5,t:flag});
               bigmap[y][z*map.w+x] = {type:"flag"};
             }*/
             
-            else if(code == 6){ // door1
+            else if(code === 6){ // door1
               W.plane({w:2,h:2,x:x,y:y+1,z:z+.2,t:door1});
               bigmap[y][z*map.w+x] = {type:"door1"};
             }
             
-            else if(code == 7){ // door2
+            else if(code === 7){ // door2
               W.plane({w:2,h:2,x:x+1,y:y+1,z:z+.2,t:door2});
               bigmap[y][z*map.w+x] = {type:"door2"};
             }
             
-            else if(code == 8){ // window
+            else if(code === 8){ // window
               W.plane({w:1,h:1,x:x+.5,y:y+.5,z:z+.1,t:pie});
               bigmap[y][z*map.w+x] = {type:"window"};
             }
@@ -715,12 +753,10 @@ onload = () => {
             //     270°
             //
             //  - yy (bits 2-3): texture (pick 4)
-            //     sand
             //     grass
+            //     sand
             //     rock
-            //     ice
-            //     brick
-            //     wood
+            //     roof
             //     ...
             //
             //  - xxx (bits 4-6): piece
@@ -736,11 +772,20 @@ onload = () => {
               zz = code & 0b11;
               yy = (code >> 2) & 0b11;
               xxx = (code >> 4) & 0b111;
-              W[["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx]]({w:xxx==7?2.5:1,h:[1,1,(x>0&&x<23&&z>0&&z<19&&yy==0)?1.2:1,1,1,1,1,2][xxx],d:xxx==7?2.5:1,x:x+.5+(xxx==7)*0.5,y:y+.5-(xxx==7)*.5,z:z+.5+(xxx==7)*.5,ry:zz*-90,t:[grass,sand,brick,roof][yy]});
+              W[["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx]]({
+                w:xxx===7?2.5:1,
+                h:[1,1,(x>0&&x<24&&z>0&&z<19&&yy===0)?1.2:1,1,1,1,1,2][xxx],
+                d:(xxx===7?2.5:1),
+                x:x+.5+(xxx===7)*0.5,
+                y:y+.5+(xxx===7)*-1.5+((x==0&&z>3&&z<19)||(x==24 && z>0))*.1,
+                z:z+.5+(xxx===7)*.2+(y>5?0.2:0)+(y>10?0.2:0)+(y>14?0.2:0),
+                ry:zz*-90,
+                t:[grass,sand,brick,roof][yy]
+              });
               bigmap[y][z*map.w+x] = {type:["","","cube", "slope","cube2","cube3","cube","pyramid"][xxx], angle: zz};
-              if(bigmap[y][z*map.w+x].type=="pyramid"){
-                console.log(1);
-                W.billboard({size:2,x:x+1,y:y+1.5,z:z+1,t:flag});
+              if(bigmap[y][z*map.w+x].type==="pyramid"){
+                //console.log(1);
+                W.billboard({size:2,x:x+1,y:y+.65,z:z+1,t:flag});
               }
             }
           }
@@ -755,7 +800,17 @@ onload = () => {
       W.group({n:"R",g:"H",size:1});
       
         // M: hero 3D model 
-        W.cube({n:"M",g:"H",w:.2,h:.5,d:.2,y:.25, b:"aa5"});
+        W.group({n:"M",g:"H",y:.4}); // group
+        W.cube({g:"M",w:.25,h:.1,d:.2,y:.70-.4,b:"c10"}); // hat
+        W.cube({g:"M",w:.28,h:.01,d:.2,y:.67-.4,b:"c10"});
+        W.cube({g:"M",w:.2,h:.1,d:.2,y:.60-.4,b:"ec6"}); // head
+        W.cube({n:"a1",g:"M",w:.05,h:.15,d:.1,y:.45-.4,b:"c10",x:-.12,z:.1}); //arms
+        W.cube({n:"a2",g:"M",w:.05,h:.15,d:.1,y:.45-.4,b:"c10",x:.12,z:.1});
+        W.cube({g:"M",w:.2,h:.2,d:.2,y:.40-.4,b:"00F"}); // body
+        W.cube({n:"l1",g:"M",w:.1,h:.2,d:.1,y:.30-.4,b:"00F",x:-.07,z:-.05}); // legs
+        W.cube({n:"l2",g:"M",w:.1,h:.2,d:.1,y:.30-.4,b:"00F",x:.06,z:-.05});
+        W.cube({n:"f1",g:"M",w:.1,h:.1,d:.2,y:.15-.4,b:"810",x:-.07,z:.02}); // feet
+        W.cube({n:"f2",g:"M",w:.1,h:.1,d:.2,y:.15-.4,b:"810",x:.06,z:.02});
     
       // Camera
       W.camera({g:"H",z:2,y:1.2,rx:0,fov:42});
@@ -791,6 +846,7 @@ onload = () => {
     // Game loop
     setInterval(()=>{
     
+      frame++; 
       // tmp
       var x, y, z, col, dx, dz, nw, ne, sw, se, lastx, lastz, lasty;
       lasty = hero.y;
@@ -859,14 +915,14 @@ onload = () => {
 
       // jump
       if(hero.grounded && keys.s && !jumpdone){
-        if(lastjump < 60 && nthjump == 1){
-          hero.vy += 2;
+        if(lastjump < 60 && nthjump === 1){
+          hero.vy += 1.5;
         }
-        else if(lastjump < 70 && nthjump == 2){
-          hero.vy = 2.5;
+        else if(lastjump < 70 && nthjump === 2){
+          hero.vy = 1.8;
         }
         else {
-          hero.vy += swim ? 1 : 1.3;
+          hero.vy += swim ? 1 : 1.1;
           nthjump = 0;
         }
         jumpdone = 1;
@@ -875,12 +931,12 @@ onload = () => {
       }
       
       // roulade
-      if(nthjump == 3 && lastjump == 18){
-        console.log("roulade");
+      if(nthjump === 3 && lastjump === 18){
+        //console.log("roulade");
         W.move({n:"M",rx:-360,a:500});
       }
       
-      if(nthjump == 3 && lastjump == 110){
+      if(nthjump === 3 && lastjump === 110){
         //console.log("roulade");
         W.move({n:"M",rx:0,a:1});
       }
@@ -896,8 +952,17 @@ onload = () => {
       
       //console.log(hero.vy);
 
-      hero.y += hero.vy;
-      if(nthjump ==3){
+      
+      
+        hero.y += hero.vy;
+        if(collision(hero.x, hero.y+.5, hero.z) > 0){
+          hero.y -= hero.vy;
+          hero.vy = 0;
+        }
+      
+      
+      
+      if(nthjump ===3){
         if(hero.y > lasty + .2) hero.y = lasty + .2;
       }
       else {
@@ -914,13 +979,13 @@ onload = () => {
       
       // swim
       
-      if(hero.y < .85 && W.next.M.rx != -70 && (lastjump > 120||nthjump == 1)) {
-        W.move({n:"M",y:.2,rx:-70,a:200});
+      if(hero.y < .85 && W.next.M.rx != -70 && (lastjump > 120||nthjump === 1)) {
+        W.move({n:"M",z:.1,y:.2,rx:-70,a:200});
         nthjump = -1;
         swim = 1;
       }
-      else if(hero.y > .85 && W.next.M.rx != 0 && (lastjump > 120||nthjump == 1)) {
-        W.move({n:"M",y:.5,rx:0,a:200});
+      else if(hero.y > .85 && W.next.M.rx != 0 && (lastjump > 120||nthjump === 1)) {
+        W.move({n:"M",z:0,y:.4,rx:0,a:200});
         swim = 0;
       }
       //console.log(swim)
@@ -932,6 +997,22 @@ onload = () => {
       
       // Go front / back
       if(keys.u || keys.d){
+        
+        walking = 1;
+        walkframe++;
+        
+        if(hero.grounded){
+        
+          // Move arms/legs
+          W.move({n:"a1",z:.1 + Math.cos(walkframe/2)*.02}); //arms
+          W.move({n:"a2",z:.1 - Math.cos(walkframe/2)*.02});
+          W.move({n:"l1",z:-.05 - Math.cos(walkframe/2)*.02}); // legs
+          W.move({n:"l2",z:-.05 + Math.cos(walkframe/2)*.02});
+          W.move({n:"f1",z:.01 - Math.cos(walkframe/2)*.02}); // feet
+          W.move({n:"f2",z:.01 + Math.cos(walkframe/2)*.02});
+        }
+        
+        
         dz = (-keys.u + keys.d) * Math.cos(-hero.rcamera*Math.PI/180) / (swim ? 40 : 20);
         dx = (-keys.u + keys.d) * Math.sin(-hero.rcamera*Math.PI/180) / (swim ? 40 : 20);
       
@@ -971,7 +1052,22 @@ onload = () => {
           hero.z = lastz;
         } 
       }
+      else {
+        walking = 0;
+        walkframe = 0;
+      }
       
+      if(hero.x < 0) hero.x = 0;
+      if(hero.x > 25) hero.x = 25;
+      if(hero.z < 0) hero.z = 0;
+      if(hero.z > 20) hero.z = 20;
+      
+      if(!hero.grounded && lastjump < 50){
+        W.move({n:"a2",y:.2,rz:180,a:200},50);
+      }
+      else {
+        W.move({n:"a2",y:.05,rz:0,a:0});
+      }
     },16);
   },200);
 }

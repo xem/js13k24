@@ -2,7 +2,7 @@
 // ===============
 
 debug = 1; // Enable shader/program compilation logs (optional)
-
+transparent = [];
 W = {
   
   // List of 3D models that can be rendered by the framework
@@ -86,7 +86,7 @@ W = {
         c = mix(texture(sampler, v_uv.xy), v_col, o[3]);  // base color (mix of texture and rgba)
         if(o[1] == 1.){                   // if lighting/shading is enabled:
           c = vec4(                                       // output = vec4(base color RGB * (directional shading + ambient light)), base color Alpha
-            c.rgb * (max(0., dot(light, -normalize(       // Directional shading: compute dot product of light direction and normal (0 if negative)
+            c.rgb * (max(0., dot(normalize(light - v_pos.xyz), -normalize(       // Directional shading: compute dot product of light direction and normal (0 if negative)
               o[0] > 0.                                   // if smooth shading is enabled:
               ? vec3(v_normal.xyz)                        // use smooth normals passed as varying
               : cross(dFdx(v_pos.xyz), dFdy(v_pos.xyz))   // else, compute flat normal by making a cross-product with the current fragment and its x/y neighbours
@@ -207,11 +207,13 @@ W = {
     
     // Save new state
     W.next[state.n] = state;
+    
+    if(state.type == "billboard"||state.type == "plane"){transparent.push(W.next[state.n])}
   },
   
   // Draw the scene
-  draw: (now, dt, v, i, transparent = []) => {
-    
+  draw: (now, dt, v, i) => {
+    //transparent = [];
     // Loop and measure time delta between frames
     dt = now - W.lastFrame;
     W.lastFrame = now;
@@ -258,20 +260,22 @@ W = {
     for(i in W.next){
       
       // Render the shapes with no texture and no transparency (RGB1 color)
-      if(!W.next[i].type == "billboard"){
+      if(W.next[i].type != "billboard" && W.next[i].type != "plane"){
         W.render(W.next[i], dt);
       }
       
       // Add the objects with transparency (RGBA or texture) in an array
       else {
-        transparent.push(W.next[i]);
+        //transparent.push(W.next[i]);
       }
     }
+    //console.log(W.next, transparent);
     
-    // Order transparent objects from back to front
-    transparent.sort((a, b) => {
+    // Order transparent objects from back to front every 60 frames
+    if(frame%60==0)transparent.sort((a, b) => {
       // Return a value > 0 if b is closer to the camera than a
       // Return a value < 0 if a is closer to the camera than b
+      //console.log(1)
       return W.dist(b) - W.dist(a);
     });
 
