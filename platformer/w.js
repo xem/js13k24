@@ -258,7 +258,7 @@ W = {
     for(i in W.next){
       
       // Render the shapes with no texture and no transparency (RGB1 color)
-      if(!W.next[i].t && W.col(W.next[i].b)[3] == 1){
+      if(!W.next[i].type == "billboard"){
         W.render(W.next[i], dt);
       }
       
