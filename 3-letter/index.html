@@ -1,0 +1,47 @@
+﻿<style>
+body{background:#000;overflow:hidden}
+@font-face {font-family:l;src:url(L.woff2)}
+#letter { width: 50vmin; height: 60vmin; font: 6vmin l; background:#fed;color:#000; padding: 5vmin; text-align:left; margin: 10vmin 0 0; }
+#letter div { color: pink; font-size: 12vmin; text-align:right; margin: 6vmin 0 0; transform: rotate(-25deg)}
+</style>
+<center><div id=letter>
+Dear plumber:<br>Please come to the castle.<br>I... have a leak.<br>Yours truly --<br>Princess frogchair<br><div>Pitch</span>
+</div>
+<script>
+
+onclick = (V,s) => {
+  s=speechSynthesis;
+  V=s.getVoices();
+  //console.log(V);
+  setTimeout((i,u)=>{
+    V=s.getVoices().filter(a=>a.lang.startsWith("en"));
+    for(i in V){
+      if(V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+        u=new SpeechSynthesisUtterance("Dear plumber. Please come to the castle. I... have a leak. Yours truly. Princess frogchair. Pitch!");
+        u.voice = V[i];
+        u.pitch = 10;
+        s.speak(u);
+        break;
+      }
+    }
+  },1000);
+}
+
+oncontextmenu = (V,s) => {
+  s=speechSynthesis;
+  V=s.getVoices();
+  //console.log(V);
+  setTimeout((i,u)=>{
+    V=s.getVoices().filter(a=>a.lang.startsWith("en"));
+    for(i in V){
+      if(!V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+        u=new SpeechSynthesisUtterance("It's er meee... the super plumber!");
+        u.voice = V[i];
+        u.pitch = 10;
+        s.speak(u);
+        break;
+      }
+    }
+  },1000);
+}
+</script>
