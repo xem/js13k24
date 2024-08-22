@@ -1,0 +1,16 @@
+﻿<body id=b>
+<script>
+s=speechSynthesis.getVoices().filter(a=>a.lang.startsWith("en"));
+console.log(s);
+
+setTimeout(()=>{
+  s=speechSynthesis.getVoices().filter(a=>a.lang.startsWith("en"));
+  for(i of s){
+    console.log(s||1);
+    b.innerHTML += i.name+"<br>";
+  }
+},100);
+
+
+</script>
+</body>
