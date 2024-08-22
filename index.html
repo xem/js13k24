@@ -234,6 +234,9 @@
 
 <script>
 
+  female = /Female|Google US English|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa|Moira|Kathy|Rishi|Libby/;
+  male = /Male|George|Rocko|Daniel|Grandpa|Eddy|Reed|Fred|Ralph|Mark|David|Arthur|Guy|Aaron|Albert|Jester/;
+
 /* Javascript in shown Kiosk website to prevent multitouch / zoom gestures */
 //disable select/mark text
 document.onmousedown=function() { return false; }
@@ -1834,11 +1837,25 @@ onload=()=>{
 
         // Voice
         s=speechSynthesis;
+        foundvoice=0;
         V=s.getVoices();
         setTimeout((i,u)=>{
+          // Male voice
           V=s.getVoices().filter(a=>a.lang.startsWith("en"));
           for(i in V){
-            if(!V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+            if(V[i].name.match(male)){
+              u=new SpeechSynthesisUtterance("It's er meee... the great plumber!");
+              u.voice = V[i];
+              u.rate = 1.5;
+              u.pitch = 2;
+              s.speak(u);
+              foundvoice = 1;
+              break;
+            }
+          }
+          // Default english voice
+          if(!foundvoice){
+            for(i in V){
               u=new SpeechSynthesisUtterance("It's er meee... the great plumber!");
               u.voice = V[i];
               u.rate = 1.5;
@@ -1865,13 +1882,26 @@ onload=()=>{
           s=speechSynthesis;
           V=s.getVoices();
           setTimeout((i,u)=>{
+            // Female voice
             V=s.getVoices().filter(a=>a.lang.startsWith("en"));
             for(i in V){
-              if(V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+              if(V[i].name.match(female)){
                 u=new SpeechSynthesisUtterance("Dear plumber. Please come to the castle. I... have a leak. Yours truly. Princess frogchair. Pitch");
                 u.voice = V[i];
                 u.pitch = 2;
                 u.rate = 1.5;
+                s.speak(u);
+                foundvoice = 1;
+                break;
+              }
+            }
+            // Default english voice
+            if(!foundvoice){
+              for(i in V){
+                u=new SpeechSynthesisUtterance("Dear plumber. Please come to the castle. I... have a leak. Yours truly. Princess frogchair. Pitch");
+                u.voice = V[i];
+                u.rate = 1.5;
+                u.pitch = 2;
                 s.speak(u);
                 break;
               }
@@ -2055,12 +2085,26 @@ intro = () => {
         if(lastjump < 60 && nthjump === 1){
           hero.vy += 1.5;
           // Voice
+          foundvoice = 0;
           s=speechSynthesis;
           V=s.getVoices();
 
             V=s.getVoices().filter(a=>a.lang.startsWith("en"));
             for(i in V){
-              if(!V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+              if(V[i].name.match(male)){
+                u=new SpeechSynthesisUtterance("hoohoo");
+                u.voice = V[i];
+                u.rate = 1.5;
+                u.pitch = 2;
+                s.speak(u);
+                foundvoice = 1;
+                break;
+              }
+            }
+
+            // Default english voice
+            if(!foundvoice){
+              for(i in V){
                 u=new SpeechSynthesisUtterance("hoohoo");
                 u.voice = V[i];
                 u.rate = 1.5;
@@ -2075,11 +2119,25 @@ intro = () => {
           hero.vy = 1.8;
           // Voice
           s=speechSynthesis;
+          foundvoice = 0;
           V=s.getVoices();
 
             V=s.getVoices().filter(a=>a.lang.startsWith("en"));
             for(i in V){
               if(!V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+                u=new SpeechSynthesisUtterance("yahoooo");
+                u.voice = V[i];
+                u.rate = 1.5;
+                u.pitch = 2;
+                s.speak(u);
+                foundvoice = 1;
+                break;
+              }
+            }
+
+            // Default english voice
+            if(!foundvoice){
+              for(i in V){
                 u=new SpeechSynthesisUtterance("yahoooo");
                 u.voice = V[i];
                 u.rate = 1.5;
@@ -2095,12 +2153,26 @@ intro = () => {
           if(swim) waterjump();
           else{
             // Voice
+            foundvoice = 0;
             s=speechSynthesis;
             V=s.getVoices();
 
               V=s.getVoices().filter(a=>a.lang.startsWith("en"));
               for(i in V){
                 if(!V[i].name.match(/Female|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa/)){
+                  u=new SpeechSynthesisUtterance("woo");
+                  u.voice = V[i];
+                  u.rate = 1.5;
+                  u.pitch = 2;
+                  s.speak(u);
+                  foundvoice = 1;
+                  break;
+                }
+              }
+
+              // Default english voice
+              if(!foundvoice){
+                for(i in V){
                   u=new SpeechSynthesisUtterance("woo");
                   u.voice = V[i];
                   u.rate = 1.5;

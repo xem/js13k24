@@ -1,13 +1,14 @@
 ﻿<body id=b>
+<input id=i>
 <script>
 s=speechSynthesis.getVoices().filter(a=>a.lang.startsWith("en"));
 console.log(s);
 
 setTimeout(()=>{
-  s=speechSynthesis.getVoices().filter(a=>a.lang.startsWith("en"));
-  for(i of s){
-    console.log(s||1);
-    b.innerHTML += i.name+"<br>";
+  s=speechSynthesis;
+  console.log(V=s.getVoices().filter(a=>a.lang.startsWith("en")));
+  for(a in V){
+  b.innerHTML+='<button onclick=u=new(SpeechSynthesisUtterance)(i.value),u.voice=V['+a+'],s.speak(u)>'+V[a].name;
   }
 },100);
 
