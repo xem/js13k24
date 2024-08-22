@@ -15,7 +15,15 @@
 
 @font-face{ /* emoji */
   font-family: emoji;
-  src:url(Twemoji.ttf)
+  src:url(//xem.github.io/unicode13/Twemoji.ttf)
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 #b { /* body */
@@ -123,33 +131,68 @@
 
 #toad {
   font: 30vmin emoji;
-  margin: 40vmin 0 0 30vmin;
+  margin: 40vmin 0 0 -50vmin;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
 }
 
 #letter.large {
   width: 55vmin;
   height: auto;
-  left: 70%;
+  left: 75%;
 }
 
 #eyes {
   font: 9vmin emoji;
-  margin: 55vmin 0 0 41vmin;
+  margin: 55vmin 0 0 -39vmin;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
 }
 
 #mouth {
   font: 9vmin emoji;
-  margin: 63vmin 0 0 41vmin;
+  margin: 63vmin 0 0 -39vmin;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
 }
+
+.dpad {
+    position: fixed;
+    width: 100%;
+    bottom: 45px;
+    left: 10px;
+    z-index: 2;
+    color: #000;
+    text-align: left;
+    transition: opacity .5s;
+}
+
+.dpad div {
+    display: inline-block;
+    font-size: 35px;
+    pointer-events: all;
+    margin: 10px;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background: linear-gradient(45deg, #ddd, #888);
+    box-shadow: 2px 2px 5px #000;
+    font-weight: 700;
+    padding: 4px 0 0;
+    vertical-align: bottom;
+}
+#bjump {
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    display: block;
+    font-family: emoji;
+}
+.uu { opacity: 0;  }
 
 
 </style>
@@ -157,7 +200,7 @@
 
 <body id=b>
   <div id="content">
-    <h2 id=load>loading...<span style='font:1px emoji;opacity:0'>🌳</h2>
+    <h2 id=load>loading...<span style='font:1px emoji;opacity:0'>🌳</span><span style='font:1px m;opacity:0'>G</h2>
   </div>
   <div id="canvas">
     <canvas id=c></canvas>
@@ -178,9 +221,36 @@
     <img id=fenc>
     <img id=sky>
   </div>
+  <div class="dpad uu" id="dpad">
+    <div class="uu">↑</div>
+    <div ontouchstart="keys.u=1" ontouchend="keys.u=0">▲</div>
+    <br>
+    <div ontouchstart="keys.l=1" ontouchend="keys.l=0">◀︎</div>
+    <div ontouchstart="keys.d=1" ontouchend="keys.d=0">▼</div>
+    <div ontouchstart="keys.r=1" ontouchend="keys.r=0">▶︎</div>
+    <div id="bjump" ontouchstart="keys.s=1" ontouchend="keys.s=0;jumpdone=0">🏃</div>
+  </div>
 </body>
 
 <script>
+
+/* Javascript in shown Kiosk website to prevent multitouch / zoom gestures */
+//disable select/mark text
+document.onmousedown=function() { return false; }
+document.onselectstart = function() { return false; }
+//disable right click
+window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
+//disable multi touch touch stuff
+window.addEventListener("touchstart", touchHandler, { passive: false, capture: false, once: false });
+function touchHandler(event) {
+  if (event.touches.length > 1) {
+    //the event is multi-touch
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    return false;
+  }
+}
+
 // WebGL framework
 // ===============
 
@@ -1938,6 +2008,9 @@ intro = () => {
     hero.z = 16;
     W.move({n:"H",x:hero.x,y:hero.y,z:hero.z,a:4000})
     W.move({n:"camera",rx:-10,ry:360,a:4000/2})
+    if(navigator.userAgent.match(/Android|iPhone|iPad/i)){
+      dpad.classList.remove("uu");
+    }
   }
   else if(introstep == 10){
     W.group({n:"M",y:.4,a:1000}); // group
@@ -2014,6 +2087,7 @@ intro = () => {
       lastjump++;
 
       // jump
+      //console.log(keys.s);
       if(hero.grounded && keys.s && !jumpdone){
         if(lastjump < 60 && nthjump === 1){
           hero.vy += 1.5;
@@ -2251,7 +2325,7 @@ intro = () => {
         s.start()
 
         setTimeout(()=>{
-          content.innerHTML = "<div id=toad>🍄</div><div id=eyes>👀</div><div id=mouth>👅</div><div id=letter class=large>Hello plumber, I am a speaking mushroom NPC...<br>I'm afraid you can't go further in this demo because we reached 13kb and we have strikanintendokaphobia, the fear of being striked by Nintendo! See ya..."
+          content.innerHTML = "<div id=toad>🍄</div><div id=eyes>👀</div><div id=mouth>👅</div><div id=letter class=large>Hello plumber, I am a speaking mushroom NPC...<br>I'm afraid you can't go further in this demo because we reached 13kb and we have strikanintendokaphobia, the fear of being striked by Nintendo! See you in another entry..."
           A3 = new AudioContext,
           m3 = A3.createBuffer(1, 1e6, 44100);
           track3 = [1,,,67,,69,,67,,66,67,72,76,,,65,,67,,65,,64,65,71,74,,,64,,65,,64,,63,64,69,72,,,72,74,76,74,72,69,66,,64,63,62,60,57,54,50,,,,,67,,69,,67,,66,67,72,76,,,65,,67,,65,,64,65,71,74,,,64,,65,,64,,63,64,69,72,,,69,71,72,74,72,74,69,,71,69,71,72,,72,,,72,72,72];
