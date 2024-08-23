@@ -1,4 +1,14 @@
 <!doctype html>
+
+<!--
+
+GREAT PLUMBER 65 - JS13kGames 2024
+inspired by the intro of Super Mario 64 (//www.youtube.com/clip/UgkxzZJ4oTvJFhEzQ4Z3Pc-4iT2owIfoEPGO)
+And by my 1Kb Peach Castle from JS1K 2019 (//js1k.com/2019-x/demo/4066)
+And by the fact that Strika-nintendoka-phobia sounds like the theme Triskaidekaphobia.
+
+-->
+
 <title>Great plumber 65</title>
 <link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧑‍🔧</text></svg>">
 <head>
@@ -236,21 +246,12 @@
 </body>
 
 <script>
-// Known male/Feale speech synth voices
+// Known male/memale speech synth voices (thanks to people on Slack for giving me their)
 female = /Female|Google US English|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa|Moira|Kathy|Rishi|Libby/;
 male = /Male|George|Rocko|Daniel|Grandpa|Eddy|Reed|Fred|Ralph|Mark|David|Arthur|Guy|Aaron|Albert|Jester/;
 
-// Prevent multitouch / zoom gestures on mobile
-document.onmousedown=()=>{ return false; }
-document.onselectstart=()=>{ return false; }
+// Prevent long touch effect on mobile
 oncontextmenu = e => { e.preventDefault(); }
-window.addEventListener("touchstart", event => {
-  if (event.touches.length > 1) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    return false;
-  }
-}, { passive: false, capture: false, once: false });
 
 // WebGL framework (//xem.github.io/W)
 // (Tweaked to add a slope shape, handle animation chaining and improve perfs by sorting transparent objects only, every 60 frames)
@@ -901,14 +902,14 @@ state=0; // 0: title / 1: intro
 // Texture generator (//xem.github.io/pxtex)
 pxtex=(c,H,S,L,v=10,w=10,h=10,x=c.getContext`2d`,i,j,m=Math.random)=>{for(c.width=w,c.height=h,i=w;i--;)for(j=h;j--;)x.fillStyle=`hsl(${H+(m()-.5)*v},${S+(m()-.5)*v}%,${L+(m()-.5)*v}%)`,x.fillRect(i,j,1,1);return c.toDataURL()}
 
-// Handle keyboard inputs
+// Handle keyboard inputs (//xem.github.io/articles/jsgamesinputs.html)
 keys = [];
 onkeydown=onkeyup=(e,z='s****lurd************************l**r************l*d***u**u')=>{
   keys[z[e.which-32]]=+!!e.type[5];
   if(e.type === "keyup" && z[e.which-32] === "s"){ jumpdone = 0 }
 }
 
-// Voice player
+// Voice player (//xem.github.io/miniSpeechRecognitionAndSynthesis/miniSpeechSynthesis/lang.html)
 voice=(txt,voice,delay,rate=1.5)=>{
   s=speechSynthesis;
   foundvoice=0;
@@ -941,7 +942,7 @@ voice=(txt,voice,delay,rate=1.5)=>{
   },delay);
 }
 
-// Sound FX player
+// Sound FX player (//xem.github.io/MiniSoundEditor/)
 t=(i,n)=>(n-i)/n;
 fx = f => {
   var A,b,s,m;
@@ -954,8 +955,6 @@ fx = f => {
   s.connect(A.destination)
   s.start()
 }
-
-
 
 // Step sound
 step = (f) => {
@@ -1111,7 +1110,7 @@ map = {
   '    $$$$$$$$$$$$$$		$    '+
   '    $$                 '+
   '    $$                 '+
-  '    $$          $$    '+
+  '    $$         $$$    '+
   '    $$$ $$$$   $Z$  '+
   '     $$$$$$$$  $$$'+
   '     $$$$$$$$  '+
@@ -1482,9 +1481,6 @@ map = {
   '#########################'+
   '#########################'+
   '#########################',
-  
-
-  // Layer 17:
 
   '############|############'+
   '#########################'+
@@ -1541,7 +1537,6 @@ collision = (x, y, z, block, fine) => {
       fine = z - z1;
       return y1+fine;
     }
-    
     if(block.angle === 3){ // 1 towards -x, 0 towards +x
       fine = x - x1;
       return y1+1-fine;
@@ -1599,11 +1594,19 @@ onload=()=>{
     ctx.fillText("🚩",70,190);
     flag.src=px.toDataURL()
 
-    // grid
+    // grid (https://i.sstatic.net/P5toG.jpg)
     px.width=40;px.height=40;
     ctx=px.getContext("2d");
     ctx.fillStyle="#000";
     ctx.fillRect(0,0,40,40);
+    ctx.beginPath();
+    ctx.fillStyle="#04e";
+    ctx.arc(20,20,18,0,7);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.fillStyle="#000";
+    ctx.arc(20,20,12,0,7);
+    ctx.fill();
     ctx.fillStyle="#355";
     for(i=0;i<40;i+=5){
       ctx.fillRect(0,i,40,2);
@@ -1673,11 +1676,9 @@ onload=()=>{
     ctx.fillRect(13,0,1,9);
     ctx.fillRect(26,0,1,9);
     ctx.fillRect(39,0,1,9);
-
     ctx.fillRect(13,20,1,9);
     ctx.fillRect(26,20,1,9);
     ctx.fillRect(39,20,1,9);
-  
     // 2,4
     ctx.fillRect(7,10,1,9);
     ctx.fillRect(13+7,10,1,9);
@@ -1706,7 +1707,6 @@ onload=()=>{
     ctx.translate(40,120);
     ctx.rotate(.8);
     ctx.fillText("💐",0,0);
-    
     princess.src=px.toDataURL()
 
     // All loaded, click to start
@@ -1734,7 +1734,7 @@ onload=()=>{
               if(map.layers[y][z*map.w+x]){
                 
                 code = map.layers[y][z*map.w+x]?.codePointAt(0);
-                if(y == 0)console.log(map.layers[y][z*map.w+x], code);
+                //if(y == 0)console.log(map.layers[y][z*map.w+x], code);
                 // Chars 0-31: various pieces
                 //
                 //     0000000: \0  reserved
@@ -1780,7 +1780,7 @@ onload=()=>{
                   bigmap[y][z*map.w+x] = {type:"door2"};
                 }
                 
-                else if(code === 8){ // window (yes, it's pie)
+                else if(code === 8){ // window (yes, it's a pie)
                   W.plane({w:1,h:1,x:x+1,y:y,z:z+.01+(y>5 && z<6?0.2:0)+(y>2 && z>=6?-0.6:0)+(y>10?0.2:0)+(y>14?0.2:0),t:pie});
                   bigmap[y][z*map.w+x] = {type:"window"};
                 }
@@ -1790,7 +1790,7 @@ onload=()=>{
                   bigmap[y][z*map.w+x] = {type:"wood"};
                 }
                 else if(code === 90){ // grid
-                  console.log(90);
+                  //console.log(90);
                   W.cube({w:1,h:1,x:x+.5,y:y+.5,z:z+.5,t:gr});
                   bigmap[y][z*map.w+x] = {type:"grid"};
                 }
@@ -1854,6 +1854,7 @@ onload=()=>{
         // M: hero 3D model 
         W.group({n:"M",g:"H",y:.4-10}); // group
         W.cube({g:"M",n:"pipe",w:1,h:1.5,d:1,b:"090"})
+        W.cube({g:"pipe",w:1.1,h:.3,d:1.1,y:.5,b:"090"})
         W.cube({g:"M",w:.25,h:.1,d:.2,y:.70-.4,b:"c10"}); // hat
         W.cube({g:"M",w:.28,h:.01,d:.2,y:.65-.4,b:"c10"});
         W.cube({g:"M",w:.2,h:.1,d:.2,y:.60-.4,b:"ec6"}); // head
@@ -2015,13 +2016,13 @@ intro = () => {
   }
   else if(introstep === 10){
     hero.y = 0.4;
-    W.move({n:"M",y:0.4,a:1000});
-    W.move({n:"pipe",y:-.2,a:1000});
+    W.move({n:"M",y:0.4,a:2000});
+    W.move({n:"pipe",y:-.2,a:2000});
   }
   else if(introstep === 11){
-    W.move({n:"pipe",y:-3.4,a:1000});
+    W.move({n:"pipe",y:-3.4,a:2000});
     hero.y = 1.5;
-    W.move({n:"H",x:hero.x,y:hero.y,z:hero.z,a:1000})
+    W.move({n:"H",x:hero.x,y:hero.y,z:hero.z,a:2000})
     
     // Sound
     fx((i)=>{
@@ -2037,7 +2038,7 @@ intro = () => {
     // Intro ends, start game loop
     setTimeout(()=>{
 
-      // Game loop
+      // Game loop (//github.com/xem/mini3DPlatformer)
       setInterval(()=>{
         
         var x, y, z, col, dx, dz, nw, ne, sw, se, lastx, lastz, lasty;
@@ -2112,7 +2113,6 @@ intro = () => {
         }
         
         // Fall
-        
         hero.vy -= G;
         
         if(hero.vy < -G) hero.vy = -G; 
