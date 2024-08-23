@@ -222,6 +222,7 @@
     <img id=fenc>
     <img id=sky>
     <img id=wood>
+    <img id=gr>
   </div>
   <div class="dpad uu" id="dpad">
     <div class="uu">↑</div>
@@ -267,6 +268,8 @@ W = {
   // Reset the framework
   // param: a <canvas> element
   reset: canvas => {
+
+    var t;
     
     // Globals
     W.canvas = canvas;    // canvas element
@@ -939,8 +942,9 @@ voice=(txt,voice,delay,rate=1.5)=>{
 }
 
 // Sound FX player
+t=(i,n)=>(n-i)/n;
 fx = f => {
-  t=(i,n)=>(n-i)/n;
+  var A,b,s,m;
   A=new AudioContext()
   m=A.createBuffer(1,96e3,48e3)
   b=m.getChannelData(0)
@@ -950,6 +954,8 @@ fx = f => {
   s.connect(A.destination)
   s.start()
 }
+
+
 
 // Step sound
 step = (f) => {
@@ -1032,7 +1038,7 @@ piano = (e, V=1, m,A,volume) => {
   s.start()
 }
 
-// Intro tracks
+// Intro tracks (//xem.github.io/midi2array/)
 track1 = [1,,,,,,64,,,,,67,69,67,60,,,,,,65,,,,69,71,69,63,,,,,,67,,,,72,74,72,79,,,77,,72,67,65,76,,,72,,69,65,64,63];
 track2 = [1,,,,,,64,,64,,,,64,64,64,64,65,,65,,,,65,65,65,65,67,,67,,,,67,67,67,67,65,,65,,,,65,65,65,65,64,,64,/* start melody*/,,64,64,64,64,65,,65,,,65,65,65,65,65,,65,,,65,65,65,65,66,,66,,,66,66,66,66,67,,67,,,67,67,67,67,67,,67,,,67,67,67,67,65,,65,,,65,65,65,65]
 
@@ -1105,9 +1111,9 @@ map = {
   '    $$$$$$$$$$$$$$		$    '+
   '    $$                 '+
   '    $$                 '+
-  '    $$          $    '+
-  '    $$$ $$$$   $$  '+
-  '     $$$$$$$$  '+
+  '    $$          $$    '+
+  '    $$$ $$$$   $Z$  '+
+  '     $$$$$$$$  $$$'+
   '     $$$$$$$$  '+
   '      $$$$$$$  '+
   '       $$$$$   '+
@@ -1524,6 +1530,7 @@ collision = (x, y, z, block, fine) => {
   if(!block)return null;
   if(block.type === "cube") return y1+1;
   if(block.type === "fence") return (z-z1)>.9?y1+.8:y1-1;
+  if(block.type === "tree") return y1+1;
   else if(block.type === "water") return y1+0.7;
   else if(block.type === "slope"){
     if(block.angle === 0){ // 1 towards -z, 0 towards +z
@@ -1549,7 +1556,7 @@ collision = (x, y, z, block, fine) => {
 
 // Load fonts
 onload=()=>{
-
+  
   setTimeout(()=>{
     // Generate pxtex textures
     grass.src = pxtex(px,105,65,50,10,20,20);
@@ -1592,6 +1599,18 @@ onload=()=>{
     ctx.fillText("🚩",70,190);
     flag.src=px.toDataURL()
 
+    // grid
+    px.width=40;px.height=40;
+    ctx=px.getContext("2d");
+    ctx.fillStyle="#000";
+    ctx.fillRect(0,0,40,40);
+    ctx.fillStyle="#355";
+    for(i=0;i<40;i+=5){
+      ctx.fillRect(0,i,40,2);
+      ctx.fillRect(i,0,2,40);
+    }
+    gr.src=px.toDataURL()
+    
     // Fence
     px.width=200;px.height=200;
     ctx=px.getContext("2d");
@@ -1698,7 +1717,7 @@ onload=()=>{
 
       // Show title screen, build 3D scene
       if(state === 0){
-
+        
         // Create scene
         c.width=innerWidth;
         c.height=innerHeight;
@@ -1715,7 +1734,7 @@ onload=()=>{
               if(map.layers[y][z*map.w+x]){
                 
                 code = map.layers[y][z*map.w+x]?.codePointAt(0);
-        
+                if(y == 0)console.log(map.layers[y][z*map.w+x], code);
                 // Chars 0-31: various pieces
                 //
                 //     0000000: \0  reserved
@@ -1769,6 +1788,11 @@ onload=()=>{
                 else if(code === 9){ // wood
                   W.cube({w:1,h:1,x:x+.5,y:y+.5,z:z+.5,t:wood});
                   bigmap[y][z*map.w+x] = {type:"wood"};
+                }
+                else if(code === 90){ // grid
+                  console.log(90);
+                  W.cube({w:1,h:1,x:x+.5,y:y+.5,z:z+.5,t:gr});
+                  bigmap[y][z*map.w+x] = {type:"grid"};
                 }
                 
                 // Cubes/slopes/pyramids
@@ -2222,14 +2246,14 @@ intro = () => {
             content.innerHTML = "<div id=toad>🍄</div><div id=eyes>👀</div><div id=mouth>👅</div><div id=letter class=large>Hello plumber, I am a speaking mushroom NPC...<br>I'm afraid you can't go further in this demo because we reached 13kb and we have strikanintendokaphobia, the fear of being striked by Nintendo! The princess is in another entry..."
             A3 = new AudioContext,
             m3 = A3.createBuffer(1, 1e6, 44100);
-            track3 = [1,,,67,,69,,67,,66,67,72,76,,,65,,67,,65,,64,65,71,74,,,64,,65,,64,,63,64,69,72,,,72,74,76,74,72,69,66,,64,63,62,60,57,54,50,,,,,67,,69,,67,,66,67,72,76,,,65,,67,,65,,64,65,71,74,,,64,,65,,64,,63,64,69,72,,,69,71,72,74,72,74,69,,71,69,71,72,,72,,,72,72,72];
+            track3 = [1,,,67,,69,,67,,66,67,72,76,,,,65,,67,,65,,64,65,71,74,,,,64,,65,,64,,63,64,69,72,,,,72,74,76,74,72,69,66,,64,63,62,60,57,54,50,,,,,67,,69,,67,,66,67,72,76,,,,65,,67,,65,,64,65,71,74,,,,64,,65,,64,,63,64,69,72,,,,69,71,72,74,72,74,69,,71,69,71,72,,72,,,72,72,72,,55,54,55,52,55,60,64,,60,59,60,59,57,57,57,,57,56,57,53,57,64,65,,64,62,65,60,59,59,59,,59,58,59,55,59,64,67,,65,64,67,65,64,64,64,,62,60,64,62,60,62,57,,62,60,64,62,60,62,57,,62,60,64,62,60,62,55,,55,60,67,67,65,65,64,64,62,57,59,52,55,60,64,,60,59,60,59,57,57,57,,57,56,57,53,57,64,65,,64,62,65,60,59,59,59,,59,58,59,55,59,64,67,,65,64,67,65,64,64,64,,62,60,64,62,60,62,57,,62,60,64,62,60,62,57,,59,57,59,60,,60,,,60,60,60];
             playout3 = (track,tempo) => {
               for(var i in track){
                 setTimeout("piano(440*1.06**(track3[" + i + "] - 82),2,m3,A3,.20)", +i * +tempo);
               }
             }
             voice(letter.innerText,female,100,3)
-            setTimeout(()=>{playout3(track3,300)},12000);
+            setTimeout(()=>{playout3(track3,300)},10500);
           },1000);
         }
       },16);

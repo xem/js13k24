@@ -1,0 +1,1 @@
+﻿./ect.exe -9999 -zip ./index.zip
