@@ -246,6 +246,13 @@ And by the fact that Strika-nintendoka-phobia sounds like the theme Triskaidekap
 </body>
 
 <script>
+
+alert(navigator.userAgent));
+alert(navigator.userAgent.match(/Android|iPhone|iPad/i));
+if(navigator.userAgent.match(/Android|iPhone|iPad/i)){
+      dpad.classList.remove("uu");
+}
+
 // Known male/memale speech synth voices (thanks to people on Slack for giving me their)
 female = /Female|Google US English|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa|Moira|Kathy|Rishi|Libby/;
 male = /Male|George|Rocko|Daniel|Grandpa|Eddy|Reed|Fred|Ralph|Mark|David|Arthur|Guy|Aaron|Albert|Jester/;
