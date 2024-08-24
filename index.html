@@ -248,9 +248,9 @@ And by the fact that Strika-nintendoka-phobia sounds like the theme Triskaidekap
 <script>
 
 alert(navigator.userAgent);
-alert(orientation);
+alert(window.orientation);
 alert(navigator.userAgent.match(/Android|iPhone|iPad/i));
-if(navigator.userAgent.match(/Android|iPhone|iPad/i) || orientation){
+if(navigator.userAgent.match(/Android|iPhone|iPad/i) || window.orientation>-1){
       dpad.classList.remove("uu");
 }
 
