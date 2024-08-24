@@ -246,14 +246,6 @@ And by the fact that Strika-nintendoka-phobia sounds like the theme Triskaidekap
 </body>
 
 <script>
-
-alert(navigator.userAgent);
-alert(window.orientation);
-alert(navigator.userAgent.match(/Android|iPhone|iPad/i));
-if(navigator.userAgent.match(/Android|iPhone|iPad/i) || window.orientation>-1){
-      dpad.classList.remove("uu");
-}
-
 // Known male/memale speech synth voices (thanks to people on Slack for giving me their)
 female = /Female|Google US English|Susan|Hazel|Zira|Shelley|Grandma|Sandy|Martha|Aria|Priya|Heather|Hayley|Samantha|Catherine|Karen|Tessa|Moira|Kathy|Rishi|Libby/;
 male = /Male|George|Rocko|Daniel|Grandpa|Eddy|Reed|Fred|Ralph|Mark|David|Arthur|Guy|Aaron|Albert|Jester/;
@@ -918,7 +910,7 @@ onkeydown=onkeyup=(e,z='s****lurd************************l**r************l*d***u
 }
 
 // Voice player (//xem.github.io/miniSpeechRecognitionAndSynthesis/miniSpeechSynthesis/lang.html)
-voice=(txt,voice,delay,rate=1.5)=>{
+voice=(txt,voice,delay,rate=window.orientation>-1?1.2:1.5)=>{
   s=speechSynthesis;
   foundvoice=0;
   V=s.getVoices();
@@ -2018,7 +2010,7 @@ intro = () => {
     W.group({n:"M",y:-3.4,a:1000});
 
     // Show mobile/Tablet controls
-    if(navigator.userAgent.match(/Android|iPhone|iPad/i)){
+    if(window.orientation>-1)){
       dpad.classList.remove("uu");
     }
   }
@@ -2260,7 +2252,7 @@ intro = () => {
                 setTimeout("piano(440*1.06**(track3[" + i + "] - 82),2,m3,A3,.20)", +i * +tempo);
               }
             }
-            voice(letter.innerText,female,100,3)
+            voice(letter.innerText,female,100,window.orientation>-1?.5:3)
             setTimeout(()=>{playout3(track3,300)},10500);
           },1000);
         }
